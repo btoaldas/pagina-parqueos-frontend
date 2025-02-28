@@ -1,0 +1,52 @@
+<ion-content [fullscreen]="true">
+  <div class="flex flex-col justify-center items-center h-full bg-[#f0f4f8]">
+    <!-- Imagen Circular Superior -->
+    <div class="size-[100px] rounded-full overflow-hidden m-5">
+      <img class="size-full object-cover" src="assets/profile.jpg" alt="Profile Image" />
+    </div>
+
+    <!-- Formulario -->
+    <form class="w-full max-w-[320px] bg-white p-5 rounded-2xl shadow-md flex flex-col gap-2" [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()">
+      <!-- Título y Subtítulo -->
+      <h1 class="text-3xl font-bold text-gray-700 m-0 text-center">
+        Sistema de Parqueo
+      </h1>
+      <p class="text-[#666] mb-5 text-center">
+        Inicie sesión para continuar
+      </p>
+
+      <!-- Campo de Usuario -->
+      <ion-input type="email" fill="outline" formControlName="email" placeholder="Usuario" inputmode="email"
+        labelPlacement="stacked">
+        <ion-icon slot="start" name="people-outline" aria-hidden="true"></ion-icon>
+      </ion-input>
+
+      <!-- Campo de Contraseña -->
+      <ion-input [type]="passwordType" fill="outline" formControlName="password" placeholder="Contraseña"
+        labelPlacement="stacked">
+        <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
+        <ion-button fill="clear" slot="end" aria-label="Show/hide" (click)="togglePasswordVisibility()">
+          <ion-icon slot="icon-only" [name]="passwordIcon" aria-hidden="true"></ion-icon>
+        </ion-button>
+      </ion-input>
+
+      <!-- Enlace Olvidó su Contraseña -->
+      <ion-text color="medium">
+        <p class="text-sm text-end cursor-pointer my-3" (click)="navigateToForgotPassword()">
+          ¿Olvidó su contraseña?
+        </p>
+      </ion-text>
+
+      <!-- Botón Iniciar Sesión -->
+      <ion-button expand="block" color="primary" type="submit">
+        Iniciar Sesión
+      </ion-button>
+
+      <!-- Mensaje de Error -->
+      <ion-text *ngIf="loginError" color="danger">
+        <p class="text-xs">ERROR: {{ loginError }}</p>
+      </ion-text>
+    </form>
+  </div>
+</ion-content>
