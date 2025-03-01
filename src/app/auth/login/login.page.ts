@@ -35,11 +35,6 @@ import { AuthService } from '@/app/services/auth.service';
   selector: 'page-login',
   templateUrl: './login.page.html',
   imports: [
-    IonTitle,
-    IonToolbar,
-    IonItem,
-    IonHeader,
-    IonLabel,
     IonContent,
     CommonModule,
     FormsModule,

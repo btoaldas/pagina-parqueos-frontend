@@ -20,6 +20,12 @@ export class AuthService {
     return localStorage.getItem('authRole');
   }
 
+  logout() {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('authRole');
+    localStorage.removeItem('authId');
+  }
+
   login(email: string, password: string): Observable<LoginResponseType> {
     if (email.toLowerCase().startsWith('error'))
       return throwError(() => new Error('Credenciales Incorrectas'));

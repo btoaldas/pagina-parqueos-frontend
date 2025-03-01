@@ -1,10 +1,10 @@
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-header collapse="condense" mode="ios">
     <ion-toolbar color="primary">
       <ion-item lines="none" color="primary" class="pt-5">
         <!-- Imagen del usuario a la izquierda -->
         <ion-icon name="person-outline" slot="start"
-          class="p-4 text-3xl bg-blue-500 rounded-full text-white"></ion-icon>
+          class="p-4 text-3xl bg-blue-500 dark:bg-blue-800 rounded-full text-white"></ion-icon>
 
         <!-- Nombre y rol del usuario a la derecha -->
         <ion-label>
@@ -15,10 +15,65 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list>
-    <ion-item>
-      <ion-label>Nombre</ion-label>
-      <ion-input type="text" required></ion-input>
-    </ion-item>
-  </ion-list>
+  <div class="p-2 flex flex-col h-full gap-6 py-4 bg-gray-100 dark:bg-gray-900">
+
+    <ion-label class="font-bold">Información Personal</ion-label>
+
+    <div class="bg-white flex flex-col gap-2 dark:bg-gray-950 p-5 rounded-2xl shadow-md">
+      @if(infoEdit) {
+      <form class="flex flex-col gap-2" [formGroup]="editForm" (ngSubmit)="onSubmitEdit()">
+        <ion-input formControlName="name" type="text" label="Nombre" labelPlacement="stacked" fill="solid"
+          placeholder="Nombre" helperText="Ingrese su nombre"></ion-input>
+        <ion-input formControlName="lastname" type="text" label="Apellido" labelPlacement="stacked" fill="solid"
+          placeholder="Apellido" helperText="Ingrese su apellido"></ion-input>
+        <ion-text *ngIf="editError" color="danger">
+          <p class="text-xs">ERROR: {{ editError }}</p>
+        </ion-text>
+
+        <div class="flex ">
+          <ion-button class="flex-1" expand="solid" color="primary" type="submit">
+            Guardar cambios
+          </ion-button>
+
+          <ion-button class=" flex-1" expand="clear" color="primary" (click)="onCancelEditInfo()">
+            Cancelar
+          </ion-button>
+        </div>
+      </form>
+      } @else {
+      <ion-list class="flex flex-col gap-2 dark:bg-gray-950">
+        <ion-item class="dark:[--background:rgb(3_7_18)]">
+          <ion-icon slot="start" name="person-outline"></ion-icon>
+          <ion-label>
+            {{user ? `${user.name} ${user.lastname}` : 'Loading Name...'}}
+          </ion-label>
+        </ion-item>
+        <ion-item class="dark:[--background:rgb(3_7_18)]">
+          <ion-icon slot="start" name="mail-outline"></ion-icon>
+          <ion-label>{{user ? user.email : 'Loading Name...'}}
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-button expand="clear" color="primary" (click)="onEditInfo()">
+        Editar Perfil
+      </ion-button>
+      }
+    </div>
+
+    <ion-label class="font-bold">Seguridad</ion-label>
+
+    <div class="bg-white flex flex-col gap-2 dark:bg-gray-950 p-5 rounded-2xl shadow-md">
+      <ion-button class="w-full items-center flex relative" expand="clear">
+        <ion-icon slot="start" name="key"></ion-icon>
+        <span class="text-start flex-1">Cambiar contraseña</span>
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      </ion-button>
+    </div>
+
+    <ion-button class="w-full items-center flex relative" color="danger" (click)="onEndSession()">
+      <ion-icon slot="start" name="log-out-outline"></ion-icon>
+      Cerrar Sesión
+    </ion-button>
+
+  </div>
 </ion-content>

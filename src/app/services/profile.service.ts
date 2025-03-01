@@ -13,6 +13,20 @@ export class ProfileService {
 
   constructor(private http: HttpClient) {}
 
+  updateInfo(name: string, lastname: string): Observable<ApiResponse<boolean>> {
+    if (name.toLocaleLowerCase().startsWith('error')) {
+      return throwError(() => {
+        throw new Error('Some error');
+      });
+    }
+
+    return of({
+      message: 'Success',
+      statusCode: 200,
+      data: true,
+    });
+  }
+
   info(): Observable<ApiResponse<UserType>> {
     const user: ApiResponse<UserType> = {
       message: 'Success',
