@@ -4,7 +4,6 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 @Component({
   selector: 'app-root',
   standalone: true,
-  styles: ``,
   template: `
     <ion-app>
       <ion-router-outlet></ion-router-outlet>

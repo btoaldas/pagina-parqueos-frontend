@@ -14,12 +14,18 @@ import {
   IonText,
   IonInput,
   IonButton,
+  IonLabel,
+  IonHeader,
+  IonItem,
+  IonToolbar,
+  IonTitle,
 } from '@ionic/angular/standalone';
 import {
   peopleOutline,
   lockClosedOutline,
   eyeOffOutline,
   eyeOutline,
+  personOutline,
 } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { AuthService } from '@/app/services/auth.service';
@@ -29,6 +35,11 @@ import { AuthService } from '@/app/services/auth.service';
   selector: 'page-login',
   templateUrl: './login.page.html',
   imports: [
+    IonTitle,
+    IonToolbar,
+    IonItem,
+    IonHeader,
+    IonLabel,
     IonContent,
     CommonModule,
     FormsModule,
@@ -54,7 +65,13 @@ export class LoginPage implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
-    addIcons({ peopleOutline, lockClosedOutline, eyeOffOutline, eyeOutline });
+    addIcons({
+      personOutline,
+      peopleOutline,
+      lockClosedOutline,
+      eyeOffOutline,
+      eyeOutline,
+    });
   }
 
   onSubmit() {

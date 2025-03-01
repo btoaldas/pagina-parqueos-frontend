@@ -1,13 +1,24 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
+    <ion-toolbar color="primary">
+      <ion-item lines="none" color="primary" class="pt-5">
+        <!-- Imagen del usuario a la izquierda -->
+        <ion-icon name="person-outline" slot="start"
+          class="p-4 text-3xl bg-blue-500 rounded-full text-white"></ion-icon>
+
+        <!-- Nombre y rol del usuario a la derecha -->
+        <ion-label>
+          <h2>{{user?.name ?? 'Loading...'}}</h2>
+          <p>{{user?.role ?? 'No role defined'}}</p>
+        </ion-label>
+      </ion-item>
     </ion-toolbar>
   </ion-header>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Nombre</ion-label>
+      <ion-input type="text" required></ion-input>
+    </ion-item>
+  </ion-list>
 </ion-content>

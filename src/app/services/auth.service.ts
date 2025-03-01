@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, tap, of, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
-import { LoginResponseType } from '../types/authresponse';
+import { LoginResponseType } from '../models/auth-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +11,14 @@ export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`;
 
   constructor(private http: HttpClient) {}
+
+  getToken() {
+    return localStorage.getItem('authToken');
+  }
+
+  getRole() {
+    return localStorage.getItem('authRole');
+  }
 
   login(email: string, password: string): Observable<LoginResponseType> {
     if (email.toLowerCase().startsWith('error'))
@@ -33,11 +41,12 @@ export class AuthService {
     };
 
     localStorage.setItem('authToken', 'tokentoken');
-    if (email.toLocaleLowerCase().startsWith('admin'))
-      localStorage.setItem('authRole', 'admin');
+
+    let role = 'cliente';
+    if (email.toLocaleLowerCase().startsWith('admin')) role = 'admin';
     else if (email.toLocaleLowerCase().startsWith('empleado'))
-      localStorage.setItem('authRole', 'empleado');
-    else localStorage.setItem('authRole', 'cliente');
+      role = 'empleado';
+    localStorage.setItem('authRole', role);
     localStorage.setItem('authId', 'id');
 
     return of(data);

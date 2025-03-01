@@ -18,6 +18,7 @@ import {
   statsChartOutline,
 } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import { AuthService } from '@/app/services/auth.service';
 
 @Component({
   selector: 'app-tabs',
@@ -36,7 +37,7 @@ import { addIcons } from 'ionicons';
 export class TabsPage implements OnInit {
   role: string = 'cliente';
 
-  constructor() {
+  constructor(private authSerivce: AuthService) {
     addIcons({
       homeOutline,
       personOutline,
@@ -49,6 +50,6 @@ export class TabsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.role = localStorage['authRole'];
+    this.role = this.authSerivce.getRole() ?? 'cliente';
   }
 }
