@@ -21,14 +21,14 @@
       </div>
 
       <!-- New Password Form -->
-      <form *ngIf="phase === 1" class="flex flex-col gap-3" (ngSubmit)="onSendCode()">
+      <form *ngIf="phase === 1" class="flex flex-col gap-3" [formGroup]="emailForm" (ngSubmit)="onSendCode()">
         <p class="text-[#666] text-center">
           Ingrese su correo electrónico para recibir un código de verificación
         </p>
 
         <!--  formControlName="email" -->
-        <ion-input type="email" fill="outline" placeholder="Correo electrónico" inputmode="send-email"
-          labelPlacement="stacked">
+        <ion-input type="email" fill="outline" formControlName="email" placeholder="Correo electrónico"
+          inputmode="email" labelPlacement="stacked">
           <ion-icon slot="start" name="mail-outline" aria-hidden="true"></ion-icon>
         </ion-input>
 
@@ -37,12 +37,12 @@
         </ion-button>
       </form>
 
-      <form *ngIf="phase === 2" class="flex flex-col gap-3" (ngSubmit)="onValidateCode()">
+      <form *ngIf="phase === 2" class="flex flex-col gap-3" [formGroup]="codeForm" (ngSubmit)="onValidateCode()">
         <p class="text-[#666] text-center">
           Ingrese el código de verificacion enviado a su correo
         </p>
 
-        <ion-input type="text" fill="outline" placeholder="Código" inputmode="code" labelPlacement="stacked">
+        <ion-input type="text" fill="outline" placeholder="Código" labelPlacement="stacked" formControlName="code">
           <ion-icon slot="start" name="key-outline" aria-hidden="true"></ion-icon>
         </ion-input>
 
@@ -51,17 +51,17 @@
         </ion-button>
       </form>
 
-      <form *ngIf="phase === 3" class="flex flex-col gap-3" (ngSubmit)="onSubmit()">
+      <form *ngIf="phase === 3" class="flex flex-col gap-3" [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
         <p class="text-[#666] text-center">
           Ingrese su nueva contraseña
         </p>
         <!--  formControlName="email" -->
-        <ion-input type="password" fill="outline" placeholder="Nueva contraseña" inputmode="new-password"
+        <ion-input type="password" fill="outline" placeholder="Nueva contraseña" formControlName="newPassword"
           labelPlacement="stacked">
           <ion-icon slot="start" name="lock-closed-outline" aria-hidden="true"></ion-icon>
         </ion-input>
 
-        <ion-input type="password" fill="outline" placeholder="Confirmar contraseña" inputmode="repeat-password"
+        <ion-input type="password" fill="outline" placeholder="Confirmar contraseña" formControlName="repeatPassword"
           labelPlacement="stacked">
           <ion-icon slot="start" name="lock-closed-outline" aria-hidden="true"></ion-icon>
         </ion-input>

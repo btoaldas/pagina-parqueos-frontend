@@ -61,11 +61,10 @@ export class LoginPage implements OnInit {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       // Aquí iría tu lógica para el login
-      console.log('Email:', email, 'Password:', password);
 
       this.authService.login(email, password).subscribe({
         next: (response) => {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/two-factor']);
         },
         error: (err) => {
           console.error('Error en el login:', err);

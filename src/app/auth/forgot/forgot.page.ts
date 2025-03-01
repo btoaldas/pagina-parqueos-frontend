@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {
   IonContent,
   IonHeader,
@@ -31,12 +37,26 @@ import { Router } from '@angular/router';
     IonIcon,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class ForgotPage implements OnInit {
   phase: number = 1;
+  emailForm: FormGroup;
+  codeForm: FormGroup;
+  passwordForm: FormGroup;
 
-  constructor(private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router) {
+    this.emailForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+    });
+    this.codeForm = this.fb.group({
+      code: ['', [Validators.required, Validators.minLength(6)]],
+    });
+    this.passwordForm = this.fb.group({
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      repeatPassword: ['', [Validators.required, Validators.minLength(6)]],
+    });
     addIcons({
       arrowBackOutline,
       mailOutline,
@@ -57,7 +77,8 @@ export class ForgotPage implements OnInit {
   onSubmit() {}
 
   backtoLoggin() {
-    this.router.navigate(['/login']);
+    if (this.phase > 1) this.phase--;
+    else this.router.navigate(['/login']);
   }
 
   ngOnInit() {}
