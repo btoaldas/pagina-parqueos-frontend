@@ -1,0 +1,49 @@
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar color="primary">
+      <ion-title size="large">Usuarios</ion-title>
+      <ion-button slot="end" (click)="onNewUser()">
+        <ion-icon slot="start" name="add-outline"></ion-icon>
+        Nuevo
+      </ion-button>
+    </ion-toolbar>
+    <ion-searchbar (ionInput)="onSearch($event)" placeholder="Buscar..." debounce="250"></ion-searchbar>
+  </ion-header>
+
+  <div class="bg-gray-100 dark:bg-gray-900 gap-2 flex flex-col p-2">
+    <div class="flex flex-col gap-3 overflow-y-scroll">
+      @if(users) {
+      @for(user of users; track user.id) {
+      <div class="rounded-md bg-white dark:bg-gray-950 p-2 shadow-md flex flex-col gap-2">
+        <div class="flex w-full items-center justify-between">
+          <div class="flex gap-2 items-center">
+            <ion-icon class="text-blue-600" size="large" name="person-circle-outline"></ion-icon>
+            <p class="font-bold">{{user.name}} {{user.lastname}}</p>
+          </div>
+          <p class="text-sm p-1 rounded-md font-bold"
+            [ngClass]="{ 'bg-green-300 text-green-800' : user.state, 'bg-red-300 text-red-800' : !user.state }">
+            {{user.state
+            ?'ACTIVO' :
+            'INACTIVO'}}</p>
+        </div>
+        <p class="text-gray-500">{{user.email}}</p>
+        <div class="flex">
+          <p class="text-blue-600 font-bold text-sm py-1 px-3 rounded-full bg-blue-200 dark:bg-blue-950">
+            {{user.role.toUpperCase()}}</p>
+        </div>
+        <div class="flex justify-end">
+          <ion-button color="{{user.state ? 'danger':'success'}}" fill="clear" size="small" (click)="onSwitch(user.id)">
+            <ion-icon slot="icon-only"
+              name="{{user.state?'close-circle-outline':'checkmark-circle-outline'}}"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" size="small" (click)="onEditUser(user.id)">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+      } @empty { <ion-text>Sin usuarios</ion-text>
+      }
+      }
+    </div>
+  </div>
+</ion-content>

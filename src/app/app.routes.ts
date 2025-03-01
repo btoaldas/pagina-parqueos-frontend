@@ -38,6 +38,30 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./client/profile/profile.page').then((m) => m.ProfilePage),
       },
+      {
+        path: 'users',
+        loadComponent: () =>
+          import('./admin/users/users.page').then((m) => m.UsersPage),
+      },
+      {
+        path: 'users/new',
+        loadComponent: () =>
+          import('./admin/users-new/users-new.page').then(
+            (m) => m.UsersNewPage
+          ),
+      },
+      {
+        path: 'users/edit/:id',
+        loadComponent: () =>
+          import('./admin/users-edit/users-edit.page').then(
+            (m) => m.UsersEditPage
+          ),
+      },
+      {
+        path: 'reports',
+        loadComponent: () =>
+          import('./admin/reports/reports.page').then((m) => m.ReportsPage),
+      },
     ],
   },
   { path: '**', redirectTo: 'login', pathMatch: 'full' },

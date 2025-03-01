@@ -19,15 +19,15 @@
       <!-- Campo de Usuario -->
       <ion-input type="email" fill="outline" formControlName="email" placeholder="Usuario" inputmode="email"
         labelPlacement="stacked">
-        <ion-icon slot="start" name="people-outline" aria-hidden="true"></ion-icon>
+        <ion-icon slot="start" name="people-outline"></ion-icon>
       </ion-input>
 
       <!-- Campo de Contraseña -->
       <ion-input [type]="passwordType" fill="outline" formControlName="password" placeholder="Contraseña"
         labelPlacement="stacked">
-        <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
         <ion-button fill="clear" slot="end" aria-label="Show/hide" (click)="togglePasswordVisibility()">
-          <ion-icon slot="icon-only" [name]="passwordIcon" aria-hidden="true"></ion-icon>
+          <ion-icon slot="icon-only" [name]="passwordIcon"></ion-icon>
         </ion-button>
       </ion-input>
 

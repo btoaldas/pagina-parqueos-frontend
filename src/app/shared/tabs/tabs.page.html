@@ -11,11 +11,6 @@
     </ion-tab-button>
 
     @if(role === 'empleado') {
-    <ion-tab-button tab="parking" class="bg-gray-50 dark:bg-gray-950">
-      <ion-icon name="car-outline"></ion-icon>
-      <ion-label>Parqueos</ion-label>
-    </ion-tab-button>
-
     <ion-tab-button tab="operator" class="bg-gray-50 dark:bg-gray-950">
       <ion-icon name="eye-outline"></ion-icon>
       <ion-label>Operador</ion-label>
@@ -23,6 +18,10 @@
     }
 
     @if (role === 'admin') {
+    <ion-tab-button tab="parking" class="bg-gray-50 dark:bg-gray-950">
+      <ion-icon name="car-outline"></ion-icon>
+      <ion-label>Parqueos</ion-label>
+    </ion-tab-button>
     <ion-tab-button tab="users" class="bg-gray-50 dark:bg-gray-950">
       <ion-icon name="people-outline"></ion-icon>
       <ion-label>Usuarios</ion-label>

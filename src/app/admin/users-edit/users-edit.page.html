@@ -1,0 +1,45 @@
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar color="primary">
+      @if (user) {
+      <ion-title size="large">Edit {{user.name}}</ion-title>
+      } @else {
+      <ion-title size="large">Loading User...</ion-title>
+      }
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="bg-gray-100 h-full dark:bg-gray-900 gap-2 flex flex-col p-2">
+
+    <form (ngSubmit)="onSubmit()" [formGroup]="formGroup" class="p-2 flex flex-col gap-2">
+      <ion-input formControlName="name" inputmode="email" placeholder="Name" helperText="Insert name">
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+      </ion-input>
+      <ion-input formControlName="lastname" inputmode="text" placeholder="Lastname" helperText="Insert lastname">
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+      </ion-input>
+      <ion-input formControlName="email" inputmode="text" placeholder="Email" helperText="Insert email">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+      </ion-input>
+      <ion-input formControlName="password" inputmode="password" placeholder="Password" helperText="Insert password">
+        <ion-icon name="key-outline" slot="start"></ion-icon>
+      </ion-input>
+      <ion-select formControlName="role" placeholder="Role" inputmode="text" labelPlacement="floating"
+        label="Select Role">
+        <ion-select-option value="admin">Admin</ion-select-option>
+        <ion-select-option value="empleado">Empleado</ion-select-option>
+        <ion-select-option value="cliente">Cliente</ion-select-option>
+      </ion-select>
+      <ion-toggle formControlName="state">State</ion-toggle>
+      <ion-text *ngIf="submitError" color="danger">
+        <p class="text-xs">ERROR: {{ submitError }}</p>
+      </ion-text>
+
+      <ion-button type="submit">
+        Actualizar Datos
+      </ion-button>
+    </form>
+
+
+  </div>
+</ion-content>
