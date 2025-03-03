@@ -39,6 +39,11 @@ export const routes: Routes = [
           import('./client/profile/profile.page').then((m) => m.ProfilePage),
       },
       {
+        path: 'operator',
+        loadComponent: () =>
+          import('./employ/operator/operator.page').then((m) => m.OperatorPage),
+      },
+      {
         path: 'users',
         loadComponent: () =>
           import('./admin/users/users.page').then((m) => m.UsersPage),
@@ -56,6 +61,11 @@ export const routes: Routes = [
           import('./admin/users-edit/users-edit.page').then(
             (m) => m.UsersEditPage
           ),
+      },
+      {
+        path: 'parking',
+        loadComponent: () =>
+          import('./admin/parking/parking.page').then((m) => m.ParkingPage),
       },
       {
         path: 'reports',

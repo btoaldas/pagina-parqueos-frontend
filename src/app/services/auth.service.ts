@@ -49,9 +49,8 @@ export class AuthService {
     localStorage.setItem('authToken', 'tokentoken');
 
     let role = 'cliente';
-    if (email.toLocaleLowerCase().startsWith('admin')) role = 'admin';
-    else if (email.toLocaleLowerCase().startsWith('empleado'))
-      role = 'empleado';
+    if (email.toLowerCase().startsWith('admin')) role = 'admin';
+    else if (email.toLowerCase().startsWith('empleado')) role = 'empleado';
     localStorage.setItem('authRole', role);
     localStorage.setItem('authId', 'id');
 

@@ -1,0 +1,83 @@
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar color="primary">
+      <ion-title size="large">Gestión de Parqueos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div class="py-2 px-4 bg-gray-100 dark:bg-gray-900 h-full flex flex-col gap-3">
+    <div class="flex justify-between items-center">
+      <ion-text class="text-xl font-bold">Zonas</ion-text>
+      <ion-button fill="clear">
+        <ion-icon slot="icon-only" name="add-circle-outline" size="large"></ion-icon>
+      </ion-button>
+    </div>
+
+    <div class="h-36 overflow-x-scroll flex whitespace-nowrap scroll-smooth [scroll-snap-type:x_mandatory]">
+      @for(zone of zones; track zone.id) {
+      <div class="h-36  [flex:0_0_50%] flex items-center justify-center">
+        <div class="flex flex-col bg-white dark:bg-gray-950 p-2 gap-2 rounded-md shadow-md">
+          <ion-button size="small" fill="{{buttonFocus === zone.id ? 'solid' : 'clear'}}" color="primary"
+            (click)="onFocusZone(zone.id)">
+            <ion-icon slot="start" name="location-outline"></ion-icon>
+            {{zone.name}}
+          </ion-button>
+          <div class="text-gray-300 text-xs">
+            {{calcHourString(zone.fee, zone.max_time)}}
+          </div>
+          <div class="flex justify-around">
+            <ion-button disabled="{{buttonFocus !== zone.id}}" size="small" color="primary">
+              <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+            </ion-button>
+            <ion-button disabled="{{buttonFocus !== zone.id}}" size="small" color="danger">
+              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+
+    <div class="flex justify-between items-center">
+      <ion-text class="text-xl font-bold">Espacios</ion-text>
+      <ion-button fill="clear">
+        <ion-icon slot="icon-only" name="add-circle-outline" size="large"></ion-icon>
+      </ion-button>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      @for (space of spaces; track space.id) {
+      <div
+        class="h-36 shadow-md p-2  bg-white dark:bg-gray-950 rounded-lg flex flex-col justify-between [flex:0_0_50%]">
+        <div class="flex flex-col">
+          <div class="flex justify-between items-center">
+            <ion-icon *ngIf="space.type === 'discapacitado'" name="accessibility-outline"></ion-icon>
+            <ion-icon *ngIf="space.type === 'vehiculo'" name="car-outline"></ion-icon>
+            <ion-icon *ngIf="space.type === 'moto'" name="bicycle-outline"></ion-icon>
+
+            <ion-text class="font-extrabold">{{space.id_zone}}Z-{{space.id}}S</ion-text>
+
+            <ion-icon *ngIf="space.state === 'ocupado'" class="bg-red-500 p-1 rounded-full text-white"
+              name="stop-circle-outline"></ion-icon>
+            <ion-icon *ngIf="space.state === 'disponible'" class="bg-green-500 p-1 rounded-full text-white"
+              name="checkmark-circle-outline"></ion-icon>
+          </div>
+        </div>
+        <ion-text class="text-xs text-gray-500">{{space.type.toUpperCase()}}</ion-text>
+        <div class="flex justify-end gap-2">
+          <ion-button fill="clear" color="primary">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="danger">
+            <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+      }
+      @if(buttonFocus >= 0){
+      <ion-button class=" h-36 bg-blue-600/20 rounded-lg" fill="clear">
+        <ion-icon size="large" slot="icon-only" name="add-circle-outline"></ion-icon>
+      </ion-button>
+      }
+    </div>
+  </div>
+</ion-content>
