@@ -1,13 +1,67 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>home</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">home</ion-title>
+    <ion-toolbar color="primary">
+      <ion-title size="large">Home</ion-title>
+      <ion-text>{{getDate()}}</ion-text>
     </ion-toolbar>
   </ion-header>
+
+  <div class="bg-gray-100 dark:bg-gray-900 gap-2 flex flex-col p-2">
+
+    <div class="flex flex-col gap-2 py-4">
+      <div class="flex items-center bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
+        <ion-icon size="large" name="people"
+          class="p-3 rounded-xl text-blue-600 bg-blue-200 dark:bg-blue-900 dark:text-blue-300"></ion-icon>
+        <div class="flex-1 flex flex-col gap-1 justify-between">
+          <h3 class="text-gray-500 dark:text-gray-200">Usuarios Activo</h3>
+          <p class="text-3xl font-bold">0</p>
+          <p class="text-gray-400">+0% vs mes anterior</p>
+        </div>
+      </div>
+
+      <div class="flex items-center bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
+        <ion-icon size="large" name="cash-outline"
+          class="p-3 rounded-xl text-green-600 bg-green-200 dark:bg-green-900 dark:text-green-300"></ion-icon>
+        <div class="flex-1 flex flex-col gap-1 justify-between">
+          <h3 class="text-gray-500 dark:text-gray-200">Ingresos del Día</h3>
+          <p class="text-3xl font-bold">$0</p>
+          <p class="text-gray-400">0 transacciones</p>
+        </div>
+      </div>
+
+      <div class="flex items-center bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
+        <ion-icon size="large" name="car-outline"
+          class="p-3 rounded-xl text-yellow-600 bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300"></ion-icon>
+        <div class="flex-1 flex flex-col gap-1 justify-between">
+          <h3 class="text-gray-500 dark:text-gray-200">Espacios Ocupados</h3>
+          <p class="text-3xl font-bold">0%</p>
+          <p class="text-gray-400">0/0 espacios</p>
+        </div>
+      </div>
+
+      <div class="flex items-center bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
+        <ion-icon size="large" name="warning"
+          class="p-3 rounded-xl text-rose-600 bg-rose-200 dark:bg-rose-900 dark:text-rose-300"></ion-icon>
+        <div class="flex-1 flex flex-col gap-1 justify-between">
+          <h3 class="text-gray-500 dark:text-gray-200">Multas Pendientes</h3>
+          <p class="text-3xl font-bold">0</p>
+          <p class="text-gray-400">$0 por cobrar</p>
+        </div>
+      </div>
+    </div>
+
+    <ion-text class="text-lg font-bold">Acciones Rápidas</ion-text>
+
+    <div class="grid grid-cols-2 gap-4">
+      @for (item of [1, 2, 3, 4]; track $index) {
+      <div class="bg-white shadow-md rounded-md p-4 flex items-center justify-center">
+        <div class="flex flex-col items-center gap-2">
+          <ion-icon size="large" name="warning"
+            class="p-3 rounded-xl text-rose-600 bg-rose-200 dark:bg-rose-900 dark:text-rose-300"></ion-icon>
+        </div>
+      </div>
+      }
+    </div>
+
+  </div>
 </ion-content>
