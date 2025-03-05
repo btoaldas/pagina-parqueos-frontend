@@ -15,6 +15,7 @@ export class ZoneService {
 
   getAll(): Observable<ApiResponse<Array<ZoneType>>> {
     return of({
+      ok: true,
       message: 'Success',
       statusCode: 200,
       data: zones,

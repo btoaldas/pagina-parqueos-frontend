@@ -18,6 +18,7 @@ export class SpaceService {
 
   getAll(id: number): Observable<ApiResponse<Array<SpaceType>>> {
     return of({
+      ok: true,
       message: 'Success',
       statusCode: 200,
       data: spaces.filter((s) => s.id_zone === id),

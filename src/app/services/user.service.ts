@@ -15,6 +15,7 @@ export class UserService {
 
   switchUser(id: number): Observable<ApiResponse<boolean>> {
     return of({
+      ok: true,
       message: 'Success',
       statusCode: 200,
       data: true,
@@ -23,6 +24,7 @@ export class UserService {
 
   createOne(data: UserCreateType): Observable<ApiResponse<boolean>> {
     return of({
+      ok: true,
       message: 'Success',
       statusCode: 200,
       data: true,
@@ -34,6 +36,7 @@ export class UserService {
     data: UserCreateType
   ): Observable<ApiResponse<boolean>> {
     return of({
+      ok: true,
       message: 'Success',
       statusCode: 200,
       data: true,
@@ -49,6 +52,7 @@ export class UserService {
       });
 
     return of({
+      ok: true,
       message: 'Success',
       statusCode: 200,
       data: u,
@@ -64,6 +68,7 @@ export class UserService {
     );
 
     return of({
+      ok: true,
       message: 'Success',
       statusCode: 200,
       data: u,

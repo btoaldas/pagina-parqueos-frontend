@@ -31,6 +31,7 @@ export class AuthService {
       return throwError(() => new Error('Credenciales Incorrectas'));
 
     const data: LoginResponseType = {
+      ok: true,
       message: 'Success',
       statusCode: 200,
       data: {

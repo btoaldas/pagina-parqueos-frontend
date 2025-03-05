@@ -21,6 +21,7 @@ export class ProfileService {
     }
 
     return of({
+      ok: true,
       message: 'Success',
       statusCode: 200,
       data: true,
@@ -29,6 +30,7 @@ export class ProfileService {
 
   info(): Observable<ApiResponse<UserType>> {
     const user: ApiResponse<UserType> = {
+      ok: true,
       message: 'Success',
       statusCode: 200,
       data: {
