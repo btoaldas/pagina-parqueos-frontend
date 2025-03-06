@@ -1,13 +1,92 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>reports</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">reports</ion-title>
+    <ion-toolbar color="primary">
+      <ion-title size="large">Reports</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <div class="bg-gray-100 dark:bg-gray-900 gap-4 flex flex-col p-2">
+    <div class="flex flex-col  bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
+      <div class="flex justify-between">
+        <ion-text class="text-xl font-bold">Ingresos</ion-text>
+        <div class="flex items-center gap-2 text-green-500">
+          <ion-icon name="trending-up-outline"></ion-icon>
+          <ion-text>12%</ion-text>
+        </div>
+      </div>
+      <ion-text *ngIf="this.report" class="text-3xl font-bold">${{totalIncome}}</ion-text>
+      <div class="flex min-h-32 gap-4">
+        @if(this.report) {
+        @for (item of this.report.income_month; track item.year + ' ' + item.month) {
+        <div class="flex flex-col gap-2 items-center">
+          <div class="w-6 flex bg-gray-300 dark:bg-gray-900 flex-1 rounded-full overflow-hidden items-end">
+            <div class="bg-blue-600 w-6 rounded-full" [style]="{ height: (128 * item.total / maxIncome) + 'px' }">
+            </div>
+          </div>
+          <ion-text class="text-xs text-gray-400">{{item.year}}-{{item.month}}</ion-text>
+        </div>
+        }
+        }@else {
+        Loading...
+        }
+      </div>
+    </div>
+
+    <div class="flex flex-col bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
+      <div class="flex justify-between items-center">
+        <ion-text class="text-xl font-bold">Ocupación</ion-text>
+        <ion-text class="text-sm text-gray-500">Promedio: {{formatPercent(averageZone)}}</ion-text>
+      </div>
+      <ion-text *ngIf="this.report" class="text-3xl font-bold">{{formatPercent(totalZone)}}</ion-text>
+      <div class="grid grid-cols-6 gap-2">
+        @if(this.report) {
+        @for (item of this.report.each_space_taken; track item.id) {
+        <div class="col-span-1 text-sm flex justify-center items-center">
+          Zona {{item.id}}
+        </div>
+        <div class="col-span-4 flex items-center">
+          <div class="bg-gray-200 dark:bg-gray-900 overflow-hidden h-4 w-full rounded-full">
+            <div class="h-full bg-blue-500 origin-left"
+              [style]="{ transform: 'scaleX('+ (item.taken / item.total) + ')' }"></div>
+          </div>
+        </div>
+        <div class="col-span-1 text-xs flex items-center justify-center">
+          {{formatPercent(item.taken / item.total)}}
+        </div>
+        }
+        }@else {
+        Loading...
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
+    <div class="flex justify-between">
+      <ion-text class="text-xl font-bold">Usuarios</ion-text>
+      @if(this.report) {
+      <ion-text class="text-sm text-gray-500">Total: {{this.report.users_rol.admin + this.report.users_rol.client +
+        this.report.users_rol.employ}}</ion-text>
+      }
+    </div>
+
+    <div class="grid grid-cols-3">
+      <div class="flex justify-center items-center flex-col">
+        <ion-icon class="bg-blue-200 text-blue-500 p-2 rounded-full aspect-square" name="people"></ion-icon>
+        <ion-text class="text-gray-500 text-sm">Cliente</ion-text>
+        <ion-text class="text-lg">200</ion-text>
+      </div>
+      <div class="flex justify-center items-center flex-col">
+        <ion-icon class="bg-green-200 text-green-500 p-2 rounded-full aspect-square" name="business"></ion-icon>
+        <ion-text class="text-gray-500 text-sm">Funcionarios</ion-text>
+        <ion-text class="text-lg">50</ion-text>
+      </div>
+      <div class="flex justify-center items-center flex-col">
+        <ion-icon class="bg-rose-200 text-rose-500 p-2 rounded-full aspect-square" name="shield"></ion-icon>
+        <ion-text class="text-gray-500 text-sm">Adminstradores</ion-text>
+        <ion-text class="text-lg">6</ion-text>
+      </div>
+    </div>
+  </div>
+
 </ion-content>

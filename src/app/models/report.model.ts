@@ -16,3 +16,21 @@ export interface MainReportType {
     amount: number | null;
   };
 }
+
+export interface StatsReportType {
+  income_month: Array<{
+    year: number;
+    month: number;
+    total: number;
+  }>;
+  each_space_taken: Array<{
+    id: number;
+    total: number;
+    taken: number;
+  }>;
+  users_rol: {
+    admin: number;
+    employ: number;
+    client: number;
+  };
+}
