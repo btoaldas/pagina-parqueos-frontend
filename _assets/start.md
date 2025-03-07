@@ -43,7 +43,7 @@ ionic serve
 # 8. Login
 
 - Intentar con correos que inicien con `admin` para probar con el rol de administrador (ej. admin@123, admin@gmail.com)
-- Intentar con correos que inicien con `empleado` para probar con el rol de administrador (ej. empleado@123, empleado@gmail.com)
+- Intentar con correos que inicien con `empleado` para probar con el rol de empleado (ej. empleado@123, empleado@gmail.com)
 - Cualquier otro correo se considera cliente.
 
 ![](./8.login.png)
