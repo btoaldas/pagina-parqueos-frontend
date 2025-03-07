@@ -1,13 +1,45 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>operator</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">operator</ion-title>
+    <ion-toolbar color="primary">
+      <ion-title size="large">Funcionario</ion-title>
     </ion-toolbar>
   </ion-header>
+  <div class="py-2 px-4 bg-gray-100 dark:bg-gray-900 h-full flex flex-col gap-3">
+    <ion-segment value="entrada" [(ngModel)]="selectedTab">
+      <ion-segment-button value="entrada">
+        <ion-label>Entrada</ion-label>
+        <ion-icon name="people-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="salida">
+        <ion-label>Salida</ion-label>
+        <ion-icon name="people-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="multas">
+        <ion-label>Multas</ion-label>
+        <ion-icon name="people-outline"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
+    <div class="bg-gray-100 dark:bg-gray-900 gap-2 flex flex-col p-2">
+
+      @switch (selectedTab) {
+      @case ('entrada') {
+      <ion-button>
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+        Registrar Entrada
+      </ion-button>
+      <ion-searchbar (ionInput)="onSearch($event)" placeholder="Buscar por placa..." debounce="250"></ion-searchbar>
+      <ion-text class="text-2xl font-bold">Tickets Activos</ion-text>
+      }
+      @case ('salida') {
+      <h2>Contenido de la pestaña 2</h2>
+      <p>Aquí puedes colocar cualquier contenido o componentes para la segunda pestaña.</p>
+      }
+      @case ('multas') {
+      <h2>Contenido de la pestaña 3</h2>
+      <p>Aquí puedes colocar contenido para la tercera pestaña.</p>
+      }
+      }
+
+    </div>
+  </div>
 </ion-content>
