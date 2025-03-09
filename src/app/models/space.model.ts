@@ -1,6 +1,16 @@
-export interface SpaceCreateType {
-  state: 'disponible' | 'ocupado';
-  type: 'vehiculo' | 'moto' | 'discapacitado';
+export interface SpaceBase {
+  id: number;
+  state: 'disponible' | 'ocupado' | 'mantenimiento';
+  type: 'automovil' | 'moto' | 'discapacitado';
+}
+
+export interface SpaceResponse extends SpaceBase {
+  zone: {
+    id: number;
+  };
+}
+
+export interface SpaceCreateType extends SpaceBase {
   id_zone: number;
 }
 

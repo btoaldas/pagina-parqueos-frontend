@@ -27,12 +27,12 @@
         </p>
 
         <!--  formControlName="email" -->
-        <ion-input type="email" fill="outline" formControlName="email" placeholder="Correo electrónico"
-          inputmode="email" labelPlacement="stacked">
+        <ion-input [disabled]="enableSendCode" type="email" fill="outline" formControlName="email"
+          placeholder="Correo electrónico" inputmode="email" labelPlacement="stacked">
           <ion-icon slot="start" name="mail-outline"></ion-icon>
         </ion-input>
 
-        <ion-button expand="block" color="primary" type="submit">
+        <ion-button [disabled]="enableSendCode" expand="block" color="primary" type="submit">
           Enviar Código
         </ion-button>
       </form>
@@ -42,11 +42,12 @@
           Ingrese el código de verificacion enviado a su correo
         </p>
 
-        <ion-input type="text" fill="outline" placeholder="Código" labelPlacement="stacked" formControlName="code">
+        <ion-input [disabled]="enableValidateCode" type="text" fill="outline" placeholder="Código"
+          labelPlacement="stacked" formControlName="code">
           <ion-icon slot="start" name="key-outline"></ion-icon>
         </ion-input>
 
-        <ion-button expand="block" color="primary" type="submit">
+        <ion-button [disabled]="enableValidateCode" expand="block" color="primary" type="submit">
           Verificar Código
         </ion-button>
       </form>

@@ -66,8 +66,8 @@ export class UsersPage implements OnInit {
     });
   }
 
-  onSwitch(id: number) {
-    this.userService.switchUser(id).subscribe({
+  onSwitch(id: number, switchTo: number) {
+    this.userService.switchUser(id, switchTo).subscribe({
       next: (response) => {
         const user = this.users.find((u) => u.id === id);
         if (user) {

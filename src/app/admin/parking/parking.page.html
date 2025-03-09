@@ -5,10 +5,10 @@
     </ion-toolbar>
   </ion-header>
 
-  <div class="py-2 px-4 bg-gray-100 dark:bg-gray-900 h-full flex flex-col gap-3">
+  <div class="py-2 px-4 bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col gap-3">
     <div class="flex justify-between items-center">
       <ion-text class="text-xl font-bold">Zonas</ion-text>
-      <ion-button fill="clear">
+      <ion-button (click)="openEditZone()" fill="clear">
         <ion-icon slot="icon-only" name="add-circle-outline" size="large"></ion-icon>
       </ion-button>
     </div>
@@ -27,11 +27,9 @@
             {{calcHourString(zone.fee, zone.max_time)}}
           </div>
           <div class="flex justify-around">
-            <ion-button disabled="{{buttonFocus !== zone.id}}" size="small" color="primary">
+            <ion-button (click)="openEditZone(zone.id)" disabled="{{buttonFocus !== zone.id}}" size="small"
+              color="primary">
               <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-            </ion-button>
-            <ion-button disabled="{{buttonFocus !== zone.id}}" size="small" color="danger">
-              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
             </ion-button>
           </div>
         </div>
@@ -39,9 +37,41 @@
       }
     </div>
 
+    <ion-modal [isOpen]="isZoneEditOpen" class="dark:[--background:rgb(3_7_18)]">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-button slot="start" color="medium" (click)="closeModals()">Cancel</ion-button>
+            <ion-title>{{isNewZone ? 'Crear Nuevo' :'Edit Zone'}}</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="modal-content">
+          <h2 class="py-4 font-bold text-xl">Editar información</h2>
+          <form [formGroup]="zoneEditForm" class="flex flex-col gap-4 py-8" (ngSubmit)="saveEditZone()">
+            <ion-item>
+              <ion-label position="stacked">Nombre</ion-label>
+              <ion-input formControlName="name" inputmode="text" name="nombre" placeholder="Escribe tu nombre" required
+                ngDefaultControl></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Tarifa</ion-label>
+              <ion-input formControlName="fee" inputmode="number" type="number" name="tarifa"
+                placeholder="Escribe la tarifa" required ngDefaultControl></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Tiempo Maximo</ion-label>
+              <ion-input formControlName="maxTime" inputmode="number" type="number" name="tiempoMaximo"
+                placeholder="Escribe un tiempo maximo en segundos" required ngDefaultControl></ion-input>
+            </ion-item>
+            <ion-button expand="full" type="submit">Guardar</ion-button>
+          </form>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
     <div class="flex justify-between items-center">
       <ion-text class="text-xl font-bold">Espacios</ion-text>
-      <ion-button fill="clear">
+      <ion-button fill="clear" (click)="openSpaceNew()">
         <ion-icon slot="icon-only" name="add-circle-outline" size="large"></ion-icon>
       </ion-button>
     </div>
@@ -53,10 +83,10 @@
         <div class="flex flex-col">
           <div class="flex justify-between items-center">
             <ion-icon *ngIf="space.type === 'discapacitado'" name="accessibility-outline"></ion-icon>
-            <ion-icon *ngIf="space.type === 'vehiculo'" name="car-outline"></ion-icon>
+            <ion-icon *ngIf="space.type === 'automovil'" name="car-outline"></ion-icon>
             <ion-icon *ngIf="space.type === 'moto'" name="bicycle-outline"></ion-icon>
 
-            <ion-text class="font-extrabold">{{space.id_zone}}Z-{{space.id}}S</ion-text>
+            <ion-text class="font-extrabold">{{space.zone.id}}Z-{{space.id}}S</ion-text>
 
             <ion-icon *ngIf="space.state === 'ocupado'" class="bg-red-500 p-1 rounded-full text-white"
               name="stop-circle-outline"></ion-icon>
@@ -66,20 +96,51 @@
         </div>
         <ion-text class="text-xs text-gray-500">{{space.type.toUpperCase()}}</ion-text>
         <div class="flex justify-end gap-2">
-          <ion-button fill="clear" color="primary">
+          <ion-button (click)="openSpaceNew(space.id)" fill="clear" color="primary">
             <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-          </ion-button>
-          <ion-button fill="clear" color="danger">
-            <ion-icon slot="icon-only" name="close-outline"></ion-icon>
           </ion-button>
         </div>
       </div>
       }
       @if(buttonFocus >= 0){
-      <ion-button class=" h-36 bg-blue-600/20 rounded-lg" fill="clear">
+      <ion-button class=" h-36 bg-blue-600/20 rounded-lg" fill="clear" (click)="openSpaceNew()">
         <ion-icon size="large" slot="icon-only" name="add-circle-outline"></ion-icon>
       </ion-button>
       }
     </div>
+
+    <ion-modal [isOpen]="isSpaceNewOpen" class="dark:[--background:rgb(3_7_18)]">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-button slot="start" color="medium" (click)="closeModals()">Cancel</ion-button>
+            <ion-title>New Space</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="modal-content">
+          <h2 class="py-4 font-bold text-xl">Editar información</h2>
+          <form [formGroup]="spaceEditForm" class="flex flex-col gap-4 py-8" (ngSubmit)="saveSpaceNew()">
+            <ion-item>
+              <ion-label position="stacked">Estado</ion-label>
+              <ion-select formControlName="state" placeholder="Estado" inputmode="text" labelPlacement="floating"
+                label="Select Estado">
+                <ion-select-option value="ocupado">Ocupado</ion-select-option>
+                <ion-select-option value="disponible">Disponible</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Tipo</ion-label>
+              <ion-select formControlName="type" placeholder="Tipo" inputmode="text" labelPlacement="floating"
+                label="Select Tipo">
+                <ion-select-option value="automovil">Vehiculo</ion-select-option>
+                <ion-select-option value="moto">Moto</ion-select-option>
+                <ion-select-option value="discapacitado">Discapacitado</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-button expand="full" type="submit">Guardar</ion-button>
+          </form>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
   </div>
 </ion-content>

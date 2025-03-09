@@ -45,7 +45,7 @@
         <div class="flex-1 flex flex-col gap-1 justify-between">
           <h3 class="text-gray-500 dark:text-gray-200">Espacios Ocupados</h3>
           @if(this.report != null) {
-          <p class="text-3xl font-bold">{{format(this.report.spaces_taken.percent * 100, '', '%')}}</p>
+          <p class="text-3xl font-bold">{{format(this.report.spaces_taken.percent, '', '%')}}</p>
           <p class="text-gray-400">
             {{format(this.report.spaces_taken.taken)}}/{{format(this.report.spaces_taken.total)}} espacios</p>
           } @else {
@@ -61,7 +61,7 @@
           <h3 class="text-gray-500 dark:text-gray-200">Multas Pendientes</h3>
           @if(this.report != null) {
           <p class="text-3xl font-bold">{{format(this.report.fees.total)}}</p>
-          <p class="text-gray-400">{{format(this.report.fees.amount, '$')}} por cobrar</p>
+          <p class="text-gray-400">{{format(this.report.fees.amount ?? 0, '$')}} por cobrar</p>
           } @else {
           Loading...
           }

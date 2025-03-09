@@ -32,10 +32,15 @@
             {{user.role.toUpperCase()}}</p>
         </div>
         <div class="flex justify-end">
-          <ion-button color="{{user.state ? 'danger':'success'}}" fill="clear" size="small" (click)="onSwitch(user.id)">
-            <ion-icon slot="icon-only"
-              name="{{user.state?'close-circle-outline':'checkmark-circle-outline'}}"></ion-icon>
+          @if(user.state) {
+          <ion-button color="danger" fill="clear" size="small" (click)="onSwitch(user.id, 0)">
+            <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
           </ion-button>
+          } @else {
+          <ion-button color="success" fill="clear" size="small" (click)="onSwitch(user.id, 1)">
+            <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
+          </ion-button>
+          }
           <ion-button fill="clear" size="small" (click)="onEditUser(user.id)">
             <ion-icon slot="icon-only" name="create-outline"></ion-icon>
           </ion-button>

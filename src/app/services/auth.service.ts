@@ -1,8 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, tap, of, throwError } from 'rxjs';
-import { environment } from 'src/environments/environment.prod';
+import { catchError, Observable, tap } from 'rxjs';
+
+import { environment } from '@/environments/environment.prod';
+
 import { LoginResponseType } from '../models/auth-response.model';
+import { ApiResponse } from '../models/api-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -27,49 +30,64 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<LoginResponseType> {
-    if (email.toLowerCase().startsWith('error'))
-      return throwError(() => new Error('Credenciales Incorrectas'));
-
-    const data: LoginResponseType = {
-      ok: true,
-      message: 'Success',
-      statusCode: 200,
-      data: {
-        token: 'xdxdxdxdxdxdxdxd',
-        user: {
-          email,
-          id: 0,
-          lastname: 'Lastname',
-          name: 'Grober',
-          role: 'empleado',
-          state: 1,
-        },
-      },
-    };
-
     localStorage.setItem('authToken', 'tokentoken');
 
-    let role = 'cliente';
-    if (email.toLowerCase().startsWith('admin')) role = 'admin';
-    else if (email.toLowerCase().startsWith('empleado')) role = 'empleado';
-    localStorage.setItem('authRole', role);
+    localStorage.setItem('authRole', '');
     localStorage.setItem('authId', 'id');
 
-    return of(data);
+    return this.http
+      .post<LoginResponseType>(this.apiUrl + '/login', {
+        email,
+        password,
+      })
+      .pipe(
+        tap((response) => {
+          if (!response.data) return;
+          localStorage.setItem('authRole', response.data.user.role);
+          localStorage.setItem('authId', response.data.user.id.toString());
+          localStorage.setItem('authToken', response.data.token);
+        }),
+        catchError((error) => {
+          console.error('Error en la solicitud de login:', error);
+          throw error;
+        })
+      );
   }
 
-  /* login(email: string, password: string): Observable<LoginResponseType> {
-    const body = { email, password };
-
-    return this.http.post<LoginResponseType>(`${this.apiUrl}/login`, body).pipe(
-      tap((response) => {
-        if (response.data?.token != null)
-          localStorage.setItem('authToken', response.data.token);
-      }),
-      catchError((error) => {
-        console.error('Error en la solicitud de login:', error);
-        throw error;
-      })
+  requestPassword(email: string): Observable<ApiResponse<boolean>> {
+    return this.http.post<ApiResponse<boolean>>(
+      this.apiUrl + '/request-password',
+      {
+        email,
+      }
     );
-  } */
+  }
+
+  validateRequest(
+    email: string,
+    code: string
+  ): Observable<ApiResponse<boolean>> {
+    return this.http.post<ApiResponse<boolean>>(
+      this.apiUrl + '/validate-request',
+      {
+        email,
+        code,
+      }
+    );
+  }
+
+  updatePassword(
+    email: string,
+    code: string,
+    password: string
+  ): Observable<ApiResponse<boolean>> {
+    return this.http.post<ApiResponse<boolean>>(
+      this.apiUrl + '/update-password',
+      {
+        email,
+        code,
+        password,
+      }
+    );
+  }
 }

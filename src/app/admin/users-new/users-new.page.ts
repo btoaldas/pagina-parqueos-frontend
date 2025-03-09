@@ -58,7 +58,7 @@ export class UsersNewPage implements OnInit {
   ) {
     this.formGroup = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(4)]],
       name: ['', [Validators.required, Validators.minLength(2)]],
       lastname: ['', [Validators.required, Validators.minLength(2)]],
       role: ['cliente', [Validators.required]],
@@ -79,7 +79,7 @@ export class UsersNewPage implements OnInit {
         name: this.formGroup.value.name,
         password: this.formGroup.value.password,
         role: this.formGroup.value.role,
-        state: `${parseInt(this.formGroup.value.state)}`,
+        state: this.formGroup.value.state + 0,
       };
 
       this.userService.createOne(data).subscribe({
@@ -87,7 +87,7 @@ export class UsersNewPage implements OnInit {
           this.router.navigate(['/users']);
         },
         error: (error) => {
-          this.submitError = error;
+          this.submitError = JSON.stringify(error);
         },
       });
     }

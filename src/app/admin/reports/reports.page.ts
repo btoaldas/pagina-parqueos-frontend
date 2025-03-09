@@ -43,6 +43,11 @@ export class ReportsPage implements OnInit {
   totalIncome: number = 1;
   totalZone: number = 0;
   averageZone: number = 0;
+  users: { admin: number; empleado: number; cliente: number } = {
+    admin: 0,
+    cliente: 0,
+    empleado: 0,
+  };
 
   constructor(private reportService: ReportService) {
     addIcons({
@@ -62,27 +67,34 @@ export class ReportsPage implements OnInit {
   ngOnInit() {
     this.reportService.getStatsReport().subscribe({
       next: (response) => {
-        if (response.data != null) {
-          this.report = response.data;
-          this.maxIncome = Math.max(
-            ...this.report.income_month.map((i) => i.total)
-          );
-          this.totalIncome = this.report.income_month
-            .map((i) => i.total)
-            .reduce((p, a) => p + a);
+        if (!response.data) return;
+        this.report = response.data;
 
-          const takenSpace = this.report.each_space_taken
-            .map((z) => z.taken)
-            .reduce((a, b) => a + b);
-          const totalSpace = this.report.each_space_taken
-            .map((z) => z.total)
-            .reduce((a, b) => a + b);
-          this.totalZone = takenSpace / totalSpace;
-          this.averageZone =
-            this.report.each_space_taken
-              .map((z) => z.taken / z.total)
-              .reduce((a, b) => a + b) / this.report.each_space_taken.length;
-        }
+        this.maxIncome = Math.max(
+          ...this.report.income_month.map((i) => i.total)
+        );
+        this.totalIncome = [
+          0,
+          ...this.report.income_month.map((i) => i.total),
+        ].reduce((p, a) => p + a);
+
+        const takenSpace = this.report.each_space_taken
+          .map((z) => z.taken)
+          .reduce((a, b) => a + b);
+        const totalSpace = this.report.each_space_taken
+          .map((z) => z.total)
+          .reduce((a, b) => a + b);
+        this.totalZone = takenSpace / totalSpace;
+        this.averageZone =
+          this.report.each_space_taken
+            .map((z) => z.taken / z.total)
+            .reduce((a, b) => a + b) / this.report.each_space_taken.length;
+
+        this.users = {
+          admin: this.report.users_rol.admin,
+          cliente: this.report.users_rol.client,
+          empleado: this.report.users_rol.employ,
+        };
       },
     });
   }

@@ -14,38 +14,31 @@ export class ZoneService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<ApiResponse<Array<ZoneType>>> {
-    return of({
-      ok: true,
-      message: 'Success',
-      statusCode: 200,
-      data: zones,
-    }).pipe(delay(250));
+    return this.http.get<ApiResponse<Array<ZoneType>>>(this.apiUrl);
+  }
+
+  updateZone(
+    id: number,
+    name: string,
+    fee: string,
+    max_time: number
+  ): Observable<ApiResponse<boolean>> {
+    return this.http.put<ApiResponse<boolean>>(this.apiUrl + '/' + id, {
+      name,
+      fee,
+      max_time,
+    });
+  }
+
+  createZone(
+    name: string,
+    fee: string,
+    max_time: number
+  ): Observable<ApiResponse<boolean>> {
+    return this.http.post<ApiResponse<boolean>>(this.apiUrl, {
+      name,
+      fee,
+      max_time,
+    });
   }
 }
-
-const zones: Array<ZoneType> = [
-  {
-    id: 1,
-    name: 'Blue Zone',
-    fee: '2.3',
-    max_time: 3600,
-  },
-  {
-    id: 2,
-    name: 'Red Zone',
-    fee: '3.1',
-    max_time: 5000,
-  },
-  {
-    id: 3,
-    name: 'Yellow Zone',
-    fee: '2.5',
-    max_time: 2000,
-  },
-  {
-    id: 4,
-    name: 'Purple Zone',
-    fee: '1.2',
-    max_time: 1000,
-  },
-];

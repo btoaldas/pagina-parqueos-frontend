@@ -65,11 +65,11 @@ export class UsersEditPage implements OnInit {
   ) {
     this.formGroup = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(4)]],
       name: ['', [Validators.required, Validators.minLength(2)]],
       lastname: ['', [Validators.required, Validators.minLength(2)]],
       role: ['', [Validators.required]],
-      state: ['', [Validators.required]],
+      state: [0, [Validators.required]],
     });
     addIcons({ arrowBackOutline, personOutline, mailOutline, keyOutline });
   }
@@ -85,15 +85,18 @@ export class UsersEditPage implements OnInit {
       this.userService
         .updateOne(id, {
           email: this.formGroup.value.email,
-          lastname: this.formGroup.value.email,
+          lastname: this.formGroup.value.lastname,
           name: this.formGroup.value.name,
           password: this.formGroup.value.password,
           role: this.formGroup.value.role,
-          state: `${parseInt(this.formGroup.value.state)}`,
+          state: this.formGroup.value.state + 0,
         } as UserCreateType)
         .subscribe({
           next: (response) => {
             this.router.navigate(['/users']);
+          },
+          error: (err) => {
+            console.log(err);
           },
         });
     }

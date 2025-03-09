@@ -1,66 +1,46 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, tap, of, throwError, delay } from 'rxjs';
-import { environment } from 'src/environments/environment.prod';
+import { Observable, of, delay, tap } from 'rxjs';
+
+import { environment } from '@/environments/environment.prod';
+
 import { ApiResponse } from '../models/api-response.model';
-import { ZoneType } from '../models/zone.model';
-import { SpaceType } from '../models/space.model';
+import { SpaceResponse, SpaceType } from '../models/space.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SpaceService {
-  private apiUrl = `${environment.apiUrl}/zone`;
+  private apiUrl = `${environment.apiUrl}/space`;
 
   constructor(private http: HttpClient) {}
 
-  create() {}
+  getAll(): Observable<ApiResponse<Array<SpaceResponse>>> {
+    return this.http.get<ApiResponse<Array<SpaceResponse>>>(this.apiUrl);
+  }
 
-  getAll(id: number): Observable<ApiResponse<Array<SpaceType>>> {
-    return of({
-      ok: true,
-      message: 'Success',
-      statusCode: 200,
-      data: spaces.filter((s) => s.id_zone === id),
-    }).pipe(delay(250));
+  updateSpace(
+    id: number,
+    type: string,
+    state: string,
+    id_zone: number
+  ): Observable<ApiResponse<boolean>> {
+    return this.http.put<ApiResponse<boolean>>(this.apiUrl + '/' + id, {
+      type,
+      state,
+      id_zone,
+    });
+  }
+
+  createSpace(
+    type: string,
+    state: string,
+    id_zone: number
+  ): Observable<ApiResponse<boolean>> {
+    return this.http.post<ApiResponse<boolean>>(this.apiUrl, {
+      type,
+      state,
+      id_zone,
+    });
   }
 }
-
-const spaces: Array<SpaceType> = [
-  {
-    id: 1,
-    id_zone: 1,
-    state: 'disponible',
-    type: 'discapacitado',
-  },
-  {
-    id: 2,
-    id_zone: 1,
-    state: 'disponible',
-    type: 'moto',
-  },
-  {
-    id: 3,
-    id_zone: 1,
-    state: 'disponible',
-    type: 'vehiculo',
-  },
-  {
-    id: 4,
-    id_zone: 2,
-    state: 'ocupado',
-    type: 'moto',
-  },
-  {
-    id: 5,
-    id_zone: 3,
-    state: 'disponible',
-    type: 'moto',
-  },
-  {
-    id: 6,
-    id_zone: 3,
-    state: 'ocupado',
-    type: 'vehiculo',
-  },
-];

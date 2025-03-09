@@ -7,7 +7,6 @@ export interface UserType {
   state: number;
 }
 
-export interface UserCreateType extends Omit<UserType, 'id' | 'state'> {
+export interface UserCreateType extends Omit<UserType, 'id'> {
   password: string;
-  state: string;
 }

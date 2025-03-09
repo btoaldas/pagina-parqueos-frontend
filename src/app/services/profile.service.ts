@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, tap, of, throwError } from 'rxjs';
-import { environment } from 'src/environments/environment.prod';
+import { Observable, of, throwError } from 'rxjs';
+
+import { environment } from '@/environments/environment.prod';
+
 import { ApiResponse } from '../models/api-response.model';
 import { UserType } from '../models/user.model';
 
@@ -14,35 +16,13 @@ export class ProfileService {
   constructor(private http: HttpClient) {}
 
   updateInfo(name: string, lastname: string): Observable<ApiResponse<boolean>> {
-    if (name.toLocaleLowerCase().startsWith('error')) {
-      return throwError(() => {
-        throw new Error('Some error');
-      });
-    }
-
-    return of({
-      ok: true,
-      message: 'Success',
-      statusCode: 200,
-      data: true,
+    return this.http.post<ApiResponse<true>>(this.apiUrl + '/update', {
+      name,
+      lastname,
     });
   }
 
   info(): Observable<ApiResponse<UserType>> {
-    const user: ApiResponse<UserType> = {
-      ok: true,
-      message: 'Success',
-      statusCode: 200,
-      data: {
-        id: 0,
-        email: 'asdasd@asdasd.com',
-        lastname: 'Lastname',
-        name: 'Grober',
-        role: 'empleado',
-        state: 1,
-      },
-    };
-
-    return of(user);
+    return this.http.get<ApiResponse<UserType>>(this.apiUrl);
   }
 }
