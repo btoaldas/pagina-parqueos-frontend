@@ -46,7 +46,7 @@ export class TwoFactorPage implements OnInit, OnDestroy {
   }
 
   onVerify() {
-    this.router.navigate(['/home']);
+    this.router.navigateByUrl('/home', { skipLocationChange: true });
   }
 
   ngOnInit() {

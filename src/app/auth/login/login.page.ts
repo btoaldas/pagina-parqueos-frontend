@@ -76,7 +76,7 @@ export class LoginPage implements OnInit {
 
       this.authService.login(email, password).subscribe({
         next: (response) => {
-          this.router.navigate(['/two-factor']);
+          this.router.navigate(['/two-factor'], { skipLocationChange: true });
         },
         error: (err) => {
           console.error('Error en el login:', err);
