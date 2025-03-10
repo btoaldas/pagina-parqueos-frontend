@@ -63,7 +63,7 @@
     <ion-label class="font-bold">Seguridad</ion-label>
 
     <div class="bg-white flex flex-col gap-2 dark:bg-gray-950 p-5 rounded-2xl shadow-md">
-      <ion-button class="w-full items-center flex relative" expand="clear">
+      <ion-button class="w-full items-center flex relative" expand="clear" (click)="openModal()">
         <ion-icon slot="start" name="key"></ion-icon>
         <span class="text-start flex-1">Cambiar contraseña</span>
         <ion-icon slot="end" name="arrow-forward"></ion-icon>
@@ -74,6 +74,32 @@
       <ion-icon slot="start" name="log-out-outline"></ion-icon>
       Cerrar Sesión
     </ion-button>
-
   </div>
+
+  <ion-modal [isOpen]="isPasswordOpen" class="dark:[--background:rgb(3_7_18)]">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-button slot="start" color="medium" (click)="closeModal()">Cancel</ion-button>
+          <ion-title>Cambiar contraseña</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="modal-content">
+        <h2 class="py-4 font-bold text-xl">Editar información</h2>
+        <form [formGroup]="passwordForm" class="flex flex-col gap-4 py-8" (ngSubmit)="onSubmitUpdatePassword()">
+          <ion-item>
+            <ion-label position="stacked">Contraseña Actual</ion-label>
+            <ion-input formControlName="password" inputmode="password" name="password"
+              placeholder="Escribe tu Contraseña" required ngDefaultControl></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Contraseña Nueva</ion-label>
+            <ion-input formControlName="new-password" inputmode="password" name="new-password"
+              placeholder="Nueva contraseña" required ngDefaultControl></ion-input>
+          </ion-item>
+          <ion-button expand="full" type="submit">Guardar</ion-button>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

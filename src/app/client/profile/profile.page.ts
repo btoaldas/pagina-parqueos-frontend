@@ -20,6 +20,7 @@ import {
   IonList,
   IonInput,
   IonButton,
+  IonModal,
 } from '@ionic/angular/standalone';
 import { ProfileService } from '@/app/services/profile.service';
 import { UserType } from '@/app/models/user.model';
@@ -41,6 +42,7 @@ import { Router } from '@angular/router';
   templateUrl: './profile.page.html',
   standalone: true,
   imports: [
+    IonModal,
     IonButton,
     IonList,
     IonIcon,
@@ -52,15 +54,18 @@ import { Router } from '@angular/router';
     IonText,
     ReactiveFormsModule,
     IonToolbar,
+    IonTitle,
     CommonModule,
     FormsModule,
   ],
 })
 export class ProfilePage implements OnInit {
   editForm: FormGroup;
+  passwordForm: FormGroup;
   infoEdit: boolean = false;
   user?: UserType | null = null;
   editError: string | null = null;
+  isPasswordOpen = false;
 
   constructor(
     private router: Router,
@@ -71,6 +76,10 @@ export class ProfilePage implements OnInit {
     this.editForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(1)]],
       lastname: ['', [Validators.required, Validators.minLength(1)]],
+    });
+    this.passwordForm = this.fb.group({
+      password: ['', [Validators.required, Validators.minLength(1)]],
+      'new-password': ['', [Validators.required, Validators.minLength(1)]],
     });
     addIcons({
       personOutline,
@@ -104,6 +113,16 @@ export class ProfilePage implements OnInit {
     }
   }
 
+  onSubmitUpdatePassword() {
+    if (!this.passwordForm.valid) return;
+    const { password, 'new-password': newPassword } = this.passwordForm.value;
+    this.profileService.updatePassword(password, newPassword).subscribe({
+      next: (response) => {
+        this.isPasswordOpen = false;
+      },
+    });
+  }
+
   onEditInfo() {
     this.infoEdit = true;
   }
@@ -115,6 +134,13 @@ export class ProfilePage implements OnInit {
   onEndSession() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  closeModal() {
+    this.isPasswordOpen = false;
+  }
+  openModal() {
+    this.isPasswordOpen = true;
   }
 
   ngOnInit() {

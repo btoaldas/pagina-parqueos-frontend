@@ -46,4 +46,14 @@ export class ProfileService {
   fines(): Observable<ApiResponse<FineProfile[]>> {
     return this.http.get<ApiResponse<FineProfile[]>>(this.apiUrl + '/fines');
   }
+
+  updatePassword(
+    password: string,
+    newPassword: string
+  ): Observable<ApiResponse<boolean>> {
+    return this.http.post<ApiResponse<boolean>>(this.apiUrl + '/password', {
+      password,
+      'new-password': newPassword,
+    });
+  }
 }
