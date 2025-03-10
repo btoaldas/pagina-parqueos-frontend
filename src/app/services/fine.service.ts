@@ -24,4 +24,17 @@ export class FineService {
   pay(id: number): Observable<ApiResponse<boolean>> {
     return this.http.post<ApiResponse<boolean>>(this.apiUrl + '/pay/' + id, {});
   }
+
+  create(
+    id_ticket: number,
+    amount: number,
+    description: string,
+    image: Blob | null
+  ) {
+    const formData = new FormData();
+    formData.append('image', image!, 'image.png');
+    formData.append('json', JSON.stringify({ id_ticket, amount, description }));
+
+    return this.http.post(this.apiUrl, formData);
+  }
 }

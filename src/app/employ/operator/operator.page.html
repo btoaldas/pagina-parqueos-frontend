@@ -97,7 +97,7 @@
       }
       }
       @case ('multas') {
-      <ion-button (click)="openNewTicket()">
+      <ion-button (click)="openNewFine()">
         <ion-icon slot="start" name="add-circle-outline"></ion-icon>
         Registrar Multa
       </ion-button>
@@ -105,7 +105,6 @@
       <ion-text class="text-2xl font-bold">Multas Activos</ion-text>
       @for (fine of fines; track fine.id) {
       <div class="flex flex-col bg-white dark:bg-gray-950 p-2 gap-2 rounded-md shadow-md">
-
         <p class="text-sm">Fine #{{fine.id}}</p>
         <p class="text-xl font-bold">{{fine.ticket.plate}}</p>
         <p>
@@ -119,7 +118,10 @@
           Pagar Multa
         </ion-button>
       </div>
-      <!-- <ion-modal [isOpen]="isOpenNewOperator" class="dark:[--background:rgb(3_7_18)]">
+      }
+      }
+      }
+      <ion-modal [isOpen]="isOpenNewFine" class="dark:[--background:rgb(3_7_18)]">
         <ng-template>
           <ion-header>
             <ion-toolbar>
@@ -129,7 +131,7 @@
           </ion-header>
           <ion-content class="modal-content">
             <h2 class="py-4 font-bold text-xl px-2">Multa Formulario</h2>
-            <form [formGroup]="ticketForm" class="flex flex-col gap-4 py-8" (ngSubmit)="onSubmit()">
+            <form [formGroup]="fineForm" class="flex flex-col gap-4 py-8" (ngSubmit)="onFineSubmit()">
               <ion-item>
                 <ion-label position="stacked">Ticket</ion-label>
                 <ion-select formControlName="id_ticket" placeholder="Ticket" inputmode="text" labelPlacement="floating"
@@ -145,14 +147,23 @@
                 <ion-input formControlName="amount" inputmode="number" type="number" name="Monto"
                   placeholder="Escribe el monto" required ngDefaultControl></ion-input>
               </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Descripcion</ion-label>
+                <ion-input formControlName="description" inputmode="text" type="text" name="Monto"
+                  placeholder="Descripcion" required ngDefaultControl></ion-input>
+              </ion-item>
+              <ion-button fill="clear" (click)="takePhoto()">Tomar Foto</ion-button>
+              <ion-item class="relative">
+                <video class="w-full object-cover" #videoElement autoplay></video>
+                <canvas
+                  class="absolute left-2 bottom-2 w-16 aspect-square object-cover object-center bg-black/50 rounded-md overflow-hidden"
+                  #canvasElement></canvas>
+              </ion-item>
               <ion-button expand="full" type="submit" ngDefaultControl>Guardar Ticket</ion-button>
             </form>
           </ion-content>
         </ng-template>
-      </ion-modal> -->
-      }
-      }
-      }
+      </ion-modal>
     </div>
   </div>
 </ion-content>
