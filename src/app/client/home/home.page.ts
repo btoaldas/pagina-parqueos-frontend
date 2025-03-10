@@ -8,6 +8,7 @@ import {
   IonToolbar,
   IonText,
   IonIcon,
+  IonImg,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -19,16 +20,23 @@ import {
   personAddOutline,
   settingsOutline,
   documentTextOutline,
+  timeOutline,
 } from 'ionicons/icons';
 import { Router } from '@angular/router';
 import { MainReportType } from '@/app/models/report.model';
 import { ReportService } from '@/app/services/report.service';
+import { AuthService } from '@/app/services/auth.service';
+import { ProfileService } from '@/app/services/profile.service';
+import { TicketProfile } from '@/app/models/ticket.model';
+import { FineProfile, FineResponse } from '@/app/models/fine.model';
+import { environment } from '@/environments/environment.prod';
 
 @Component({
   selector: 'page-home',
   templateUrl: './home.page.html',
   standalone: true,
   imports: [
+    IonImg,
     IonIcon,
     IonText,
     IonContent,
@@ -41,18 +49,37 @@ import { ReportService } from '@/app/services/report.service';
 })
 export class HomePage implements OnInit {
   report: MainReportType | null = null;
+  role: string;
+  tickets: TicketProfile[] = [];
+  fines: FineProfile[] = [];
 
-  constructor(private router: Router, private reportService: ReportService) {
+  constructor(
+    private router: Router,
+    private reportService: ReportService,
+    private authService: AuthService,
+    private profileService: ProfileService
+  ) {
+    this.role = this.authService.getRole() ?? 'cliente';
     addIcons({
       people,
       cashOutline,
       carOutline,
       warning,
+      timeOutline,
       mapOutline,
       personAddOutline,
       settingsOutline,
       documentTextOutline,
     });
+  }
+
+  bakeImage(fine?: FineProfile | null) {
+    if (!fine) return '';
+    const path =
+      environment.apiUrl + '/storage/fine/' + fine.id_ticket + '_' + fine.id;
+
+    if (fine.mime.includes('png')) return path + '.png';
+    else return path + '.jpg';
   }
 
   getDate(): string {
@@ -108,7 +135,44 @@ export class HomePage implements OnInit {
     ];
   }
 
+  isOnTime(fechaObjetivo: Date) {
+    const ahora = new Date();
+    const objetivo = new Date(fechaObjetivo);
+    const diferencia = objetivo.getTime() - ahora.getTime();
+    return diferencia <= 0;
+  }
+
+  calcularTiempoRestante(fechaObjetivo: Date) {
+    const ahora = new Date();
+    const objetivo = new Date(fechaObjetivo);
+
+    const diferencia = objetivo.getTime() - ahora.getTime();
+
+    if (diferencia <= 0) {
+      return 'Fuera de tiempo';
+    }
+
+    const horas = Math.floor(diferencia / (1000 * 60 * 60)); // Horas restantes
+    const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60)); // Minutos restantes
+
+    return `Faltan ${horas} horas y ${minutos} minutos.`;
+  }
+
   ngOnInit() {
+    this.profileService.tickets().subscribe({
+      next: (response) => {
+        if (!response.data) return;
+        this.tickets = response.data;
+      },
+    });
+    this.profileService.fines().subscribe({
+      next: (response) => {
+        if (!response.data) return;
+        this.fines = response.data;
+      },
+    });
+
+    if (this.role !== 'admin') return;
     this.reportService.getMainReport().subscribe({
       next: (response) => {
         if (response.data == null) return;

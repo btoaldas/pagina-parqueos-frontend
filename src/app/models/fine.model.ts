@@ -15,3 +15,12 @@ export interface FineResponse {
     entry_date: Date;
   };
 }
+
+export interface FineProfile {
+  id: number;
+  amount: string;
+  mime: string;
+  plate: string;
+  state: string;
+  id_ticket: number;
+}

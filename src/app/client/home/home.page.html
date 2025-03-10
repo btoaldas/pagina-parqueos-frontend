@@ -8,6 +8,7 @@
 
   <div class="bg-gray-100 dark:bg-gray-900 gap-2 flex flex-col p-2">
 
+    @if(role === 'admin'){
     <div class="flex flex-col gap-2 py-4">
       <div class="flex items-center bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
         <ion-icon size="large" name="people"
@@ -68,9 +69,64 @@
         </div>
       </div>
     </div>
+    } @else {
+    <div class="py-2 flex flex-col gap-2">
+      <ion-text class="text-lg font-bold">Tickets</ion-text>
+      @for (ticket of tickets; track ticket.id) {
+      <div class="bg-white dark:bg-gray-950 shadow-md rounded-md p-4 flex gap-2 flex-col">
+        <div class="flex justify-between items-center">
+          <p class="text-sm text-gray-500">Ticket #{{ticket.id}}</p>
+          <div class="flex">
+            <p
+              class="flex items-center p-2 rounded-md text-center font-bold bg-blue-300 text-blue-800 dark:bg-blue-800 dark:text-blue-300">
+              <span>{{ticket.state}}</span>
+            </p>
+          </div>
+        </div>
+        <p class="text-lg font-bold">{{ticket.plate}} - {{ticket.zone_name}}</p>
+        <div class="flex items-center gap-2">
+          <ion-icon name="time-outline"></ion-icon>
+          <p>
+            {{ticket.entry_date.getHours()}}:{{ticket.entry_date.getMinutes()}}:{{ticket.entry_date.getSeconds()}}
+          </p>
+        </div>
+        @if(isOnTime(ticket.max_date)){
+        <p class="bg-red-800 text-red-300 px-2 py-1 rounded-md">{{calcularTiempoRestante(ticket.max_date)}}</p>
+        } @else {
+        <p class="bg-green-300 text-green-800 dark:bg-green-800 dark:text-green-300 px-2 py-1 rounded-md">
+          {{calcularTiempoRestante(ticket.max_date)}}</p>
+        }
+      </div>
+      }
+      @if(tickets.length === 0) {
+      <p>No Tienes Tickets</p>
+      }
+
+      <ion-text class="text-lg font-bold">Multas</ion-text>
+      @for (fine of fines; track fine.id) {
+      <div class="bg-white dark:bg-gray-950 shadow-md rounded-md p-4 flex gap-2 flex-col items-center">
+        <div class="flex gap-2 items-center justify-between w-full">
+          <p class="text-sm text-gray-500">Multa #{{fine.id}}</p>
+          <p class="text-lg font-bold">{{fine.plate}}</p>
+          <p
+            class="flex items-center p-2 rounded-md text-center font-bold bg-green-300 text-green-800 dark:bg-green-800 dark:text-green-300">
+            <span>${{fine.amount}}</span>
+          </p>
+        </div>
+        <ion-img class="object-cover object-center aspect-square rounded-md overflow-hidden" [src]="bakeImage(fine)"
+          [alt]="fine.id"></ion-img>
+      </div>
+      }
+
+      @if(fines.length === 0) {
+      <p>No Tienes Tickets</p>
+      }
+    </div>
+    }
   </div>
 
-  <ion-text class="text-lg font-bold">Acciones Rápidas</ion-text>
+  @if(role === 'admin'){
+  <ion-text class="text-lg px-2 font-bold">Acciones Rápidas</ion-text>
 
   <div class="grid grid-cols-2 gap-4">
     @for (item of fastAccesst(); track $index) {
@@ -83,5 +139,6 @@
     </div>
     }
   </div>
+  }
 
 </ion-content>
