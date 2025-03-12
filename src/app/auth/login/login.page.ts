@@ -29,6 +29,7 @@ import {
 } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { AuthService } from '@/app/services/auth.service';
+import { ErrorParser } from '@/app/utils/ErrorParser.util';
 
 @Component({
   standalone: true,
@@ -72,14 +73,13 @@ export class LoginPage implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      // Aquí iría tu lógica para el login
 
-      this.authService.login(email, password).subscribe({
+      this.authService.loginTwoFactorRequest(email, password).subscribe({
         next: (response) => {
           this.router.navigate(['/two-factor'], { skipLocationChange: true });
         },
         error: (err) => {
-          console.error('Error en el login:', err);
+          this.loginError = ErrorParser.handleError(err);
         },
       });
     } else {

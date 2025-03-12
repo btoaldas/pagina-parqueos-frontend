@@ -2,7 +2,7 @@
   <div class="flex flex-col justify-center h-full items-center bg-gray-50 dark:bg-gray-900">
     <!-- Imagen Circular Superior -->
     <div class="size-[100px] rounded-full aspect-square overflow-hidden m-5">
-      <img class="size-full object-cover" src="assets/profile.jpg" alt="Profile Image" />
+      <img class="size-full object-contain bg-white" src="assets/logo.svg" alt="Profile Image" />
     </div>
 
     <!-- Formulario -->
@@ -45,7 +45,7 @@
 
       <!-- Mensaje de Error -->
       <ion-text *ngIf="loginError" color="danger">
-        <p class="text-xs">ERROR: {{ loginError }}</p>
+        <p class="text-xs">{{ loginError }}</p>
       </ion-text>
     </form>
   </div>

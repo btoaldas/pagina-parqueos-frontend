@@ -2,17 +2,21 @@ export interface FineResponse {
   id: number;
   amount: number;
   description: string;
-  mime: string;
+  filename: string;
   state: string;
-  pay_date: Date;
-  ticket: {
+  pay_date: Date | null;
+  vehicle: {
     id: number;
+    year: number;
+    model: string;
     plate: string;
-    state: string;
-    amount: number;
-    id_user: 1;
-    exit_date: Date;
-    entry_date: Date;
+    id_user: number;
+  };
+  employ: {
+    id: number;
+    lastname: string;
+    name: string;
+    role: string;
   };
 }
 

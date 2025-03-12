@@ -172,7 +172,7 @@ export class HomePage implements OnInit {
       },
     });
 
-    if (this.role !== 'admin') return;
+    if (this.role === 'cliente') return;
     this.reportService.getMainReport().subscribe({
       next: (response) => {
         if (response.data == null) return;

@@ -29,6 +29,41 @@ export class AuthService {
     localStorage.removeItem('authId');
   }
 
+  loginTwoFactorRequest(
+    email: string,
+    password: string
+  ): Observable<ApiResponse<boolean>> {
+    localStorage.setItem('_tempEmail', email);
+    return this.http.post<ApiResponse<boolean>>(
+      this.apiUrl + '/two-factor/login',
+      {
+        email,
+        password,
+      }
+    );
+  }
+
+  loginTwoFactorVerify(access: string) {
+    const email = localStorage.getItem('_tempEmail')!;
+    return this.http
+      .post<LoginResponseType>(this.apiUrl + '/two-factor/token', {
+        email,
+        access,
+      })
+      .pipe(
+        tap((response) => {
+          if (!response.data) return;
+          localStorage.setItem('authRole', response.data.user.role);
+          localStorage.setItem('authId', response.data.user.id.toString());
+          localStorage.setItem('authToken', response.data.token);
+        }),
+        catchError((error) => {
+          console.error('Error en la solicitud de login:', error);
+          throw error;
+        })
+      );
+  }
+
   login(email: string, password: string): Observable<LoginResponseType> {
     localStorage.setItem('authToken', 'tokentoken');
 

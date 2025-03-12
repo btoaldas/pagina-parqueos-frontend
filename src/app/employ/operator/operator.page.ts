@@ -167,11 +167,7 @@ export class OperatorPage implements OnInit, AfterViewInit {
 
   bakeImage(fine?: FineResponse | null) {
     if (!fine) return '';
-    const path =
-      environment.apiUrl + '/storage/fine/' + fine.ticket.id + '_' + fine.id;
-
-    if (fine.mime.includes('png')) return path + '.png';
-    else return path + '.jpg';
+    return environment.apiUrl + '/storage/fine/' + fine.filename;
   }
 
   onSubmit() {

@@ -13,11 +13,11 @@
         Ingrese el código de 6 dígitos enviado a su teléfono
       </p>
 
-      <form class="flex flex-col gap-3" (ngSubmit)="onVerify()">
+      <form class="flex flex-col gap-3" [formGroup]="loginForm" (ngSubmit)="onVerify()">
 
         <!--  formControlName="email" -->
-        <ion-input class="text-center [letter-spacing:0.5rem]" type="text" maxlength="6" fill="outline"
-          placeholder="000000" inputmode="send-email" labelPlacement="stacked">
+        <ion-input formControlName="access" class="text-center [letter-spacing:0.5rem]" type="text" maxlength="6"
+          fill="outline" placeholder="000000" inputmode="send-email" labelPlacement="stacked">
         </ion-input>
 
         <ion-button expand="block" color="primary" type="submit">
@@ -32,6 +32,10 @@
       <ion-button [disabled]="btnDisabled" expand="clear" color="primary" (click)="onResendCode()">
         Reenviar Código
       </ion-button>
+      <!-- Mensaje de Error -->
+      <ion-text *ngIf="loginError" color="danger">
+        <p class="text-xs">{{ loginError }}</p>
+      </ion-text>
     </div>
   </div>
 </ion-content>
