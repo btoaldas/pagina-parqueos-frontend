@@ -251,10 +251,10 @@ export class ParkingPage implements OnInit {
     this.buttonFocus = id;
     this.zoneEditIndex = id;
     this.spaces = [];
-    this.spaceService.getAll().subscribe({
+    this.spaceService.getAllByZone(this.zoneEditIndex).subscribe({
       next: (response) => {
-        console.log(response, id);
-        this.spaces = response.data?.filter((e) => e.zone.id === id) ?? [];
+        console.log(response.data);
+        this.spaces = response.data ?? [];
       },
       error: (err) => console.error('ERROR'),
       complete: () => console.log('completed'),

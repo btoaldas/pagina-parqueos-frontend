@@ -21,6 +21,12 @@ export class SpaceService {
     );
   }
 
+  getAllByZone(id: number): Observable<ApiResponse<Array<SpaceResponse>>> {
+    return this.http.get<ApiResponse<Array<SpaceResponse>>>(
+      this.apiUrl + '/zone/' + id
+    );
+  }
+
   updateSpace(
     id: number,
     type: string,

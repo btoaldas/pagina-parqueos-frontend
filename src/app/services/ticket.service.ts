@@ -17,7 +17,7 @@ export class TicketService {
 
   getByPlate(plate: string): Observable<ApiResponse<Array<TicketModel>>> {
     return this.http
-      .get<ApiResponse<Array<TicketModel>>>(this.apiUrl + '?plate=' + plate)
+      .get<ApiResponse<Array<TicketModel>>>(this.apiUrl + '/plate/' + plate)
       .pipe(
         tap((response) => {
           if (!response.data) return;

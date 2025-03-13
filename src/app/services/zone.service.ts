@@ -14,9 +14,7 @@ export class ZoneService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<ApiResponse<Array<ZoneType>>> {
-    return this.http.get<ApiResponse<Array<ZoneType>>>(
-      this.apiUrl + `?_=${new Date().getTime()}`
-    );
+    return this.http.get<ApiResponse<Array<ZoneType>>>(this.apiUrl);
   }
 
   updateZone(

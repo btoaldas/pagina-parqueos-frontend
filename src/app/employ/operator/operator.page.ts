@@ -218,12 +218,10 @@ export class OperatorPage implements OnInit, AfterViewInit {
   }
 
   performSearch(searchTerm: string): void {
-    this.ticketService.getByPlate(searchTerm).subscribe({
+    this.ticketService.getByPlate(searchTerm ? searchTerm : '_').subscribe({
       next: (response) => {
         if (!response.data) return;
-        this.tickets = response.data.filter((s) =>
-          s.plate.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        this.tickets = response.data;
       },
     });
   }
@@ -253,7 +251,7 @@ export class OperatorPage implements OnInit, AfterViewInit {
         this.vehicles = response.data;
       },
     });
-    this.ticketService.getByPlate('').subscribe({
+    this.ticketService.getByPlate('_').subscribe({
       next: (response) => {
         if (!response.data) return;
         this.tickets = response.data;
