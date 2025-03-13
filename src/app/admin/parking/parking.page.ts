@@ -39,6 +39,7 @@ import { ZoneService } from '@/app/services/zone.service';
 import { ZoneType } from '@/app/models/zone.model';
 import { SpaceResponse } from '@/app/models/space.model';
 import { SpaceService } from '@/app/services/space.service';
+import { ErrorParser } from '@/app/utils/ErrorParser.util';
 
 @Component({
   selector: 'app-parking',
@@ -75,6 +76,9 @@ export class ParkingPage implements OnInit {
   isSpaceNewOpen: boolean = false;
   isNewZone: boolean = false;
 
+  zoneError: string | null = null;
+  spaceError: string | null = null;
+
   constructor(
     private zoneService: ZoneService,
     private spaceService: SpaceService,
@@ -84,6 +88,8 @@ export class ParkingPage implements OnInit {
       name: ['', [Validators.required]],
       fee: [0, [Validators.required, Validators.min(0)]],
       maxTime: [0, [Validators.required, Validators.min(0)]],
+      address: ['', [Validators.required]],
+      description: ['', [Validators.required]],
     });
     this.spaceEditForm = this.fb.group({
       state: ['ocupado', [Validators.required]],
@@ -110,6 +116,7 @@ export class ParkingPage implements OnInit {
 
   openEditZone(id?: number) {
     this.isZoneEditOpen = true;
+    this.zoneError = null;
     if (id == null) {
       this.isNewZone = true;
       return;
@@ -125,19 +132,41 @@ export class ParkingPage implements OnInit {
   }
 
   saveEditZone() {
-    if (!this.zoneEditForm.valid) return;
+    if (!this.zoneEditForm.valid) {
+      this.zoneError = ErrorParser.handleFormError(this.zoneEditForm);
+      return;
+    }
 
-    const { name, fee, maxTime: max_time } = this.zoneEditForm.value;
+    const {
+      name,
+      fee,
+      maxTime: max_time,
+      address,
+      description,
+    } = this.zoneEditForm.value;
 
     if (this.isNewZone) {
-      this.zoneService.createZone(name, fee, max_time).subscribe({
-        next: (response) => {
-          this.isZoneEditOpen = false;
-        },
-      });
+      this.zoneService
+        .createZone(name, fee, max_time * 60 * 60, address, description)
+        .subscribe({
+          next: (response) => {
+            this.isZoneEditOpen = false;
+          },
+          complete: () => this._loadZones(),
+          error: (err) => {
+            this.zoneError = ErrorParser.handleError(err);
+          },
+        });
     } else {
       this.zoneService
-        .updateZone(this.zoneEditIndex, name, fee, max_time)
+        .updateZone(
+          this.zoneEditIndex,
+          name,
+          fee,
+          max_time * 60 * 60,
+          address,
+          description
+        )
         .subscribe({
           next: (response) => {
             const zone = this.zones.find((z) => z.id === this.zoneEditIndex);
@@ -149,13 +178,16 @@ export class ParkingPage implements OnInit {
           },
           complete: () => {
             this.isZoneEditOpen = false;
+            this._loadZones();
           },
+          error: (err) => (this.zoneError = ErrorParser.handleError(err)),
         });
     }
   }
 
   openSpaceNew(id?: number) {
     this.isSpaceNewOpen = true;
+    this.spaceError = null;
     if (id == null) {
       this.isNewZone = true;
       return;
@@ -172,15 +204,21 @@ export class ParkingPage implements OnInit {
   }
 
   saveSpaceNew() {
-    if (!this.spaceEditForm.valid) return;
+    if (!this.spaceEditForm.valid) {
+      this.spaceError = ErrorParser.handleFormError(this.spaceEditForm);
+      return;
+    }
 
     const { state, type } = this.spaceEditForm.value;
 
     if (this.isNewZone) {
       this.spaceService.createSpace(type, state, this.zoneEditIndex).subscribe({
         next: (response) => {
+          console.log({ response });
           this.isSpaceNewOpen = false;
         },
+        complete: () => this.onFocusZone(this.zoneEditIndex),
+        error: (err) => (this.spaceError = ErrorParser.handleError(err)),
       });
     } else {
       this.spaceService
@@ -195,7 +233,9 @@ export class ParkingPage implements OnInit {
           },
           complete: () => {
             this.isSpaceNewOpen = false;
+            this.onFocusZone(this.zoneEditIndex);
           },
+          error: (err) => (this.spaceError = ErrorParser.handleError(err)),
         });
     }
   }
@@ -213,12 +253,19 @@ export class ParkingPage implements OnInit {
     this.spaces = [];
     this.spaceService.getAll().subscribe({
       next: (response) => {
+        console.log(response, id);
         this.spaces = response.data?.filter((e) => e.zone.id === id) ?? [];
       },
+      error: (err) => console.error('ERROR'),
+      complete: () => console.log('completed'),
     });
   }
 
   ngOnInit() {
+    this._loadZones();
+  }
+
+  _loadZones() {
     this.zoneService.getAll().subscribe({
       next: (response) => {
         this.zones = response.data ?? [];

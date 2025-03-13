@@ -50,7 +50,7 @@
           <form [formGroup]="zoneEditForm" class="flex flex-col gap-4 py-8" (ngSubmit)="saveEditZone()">
             <ion-item>
               <ion-label position="stacked">Nombre</ion-label>
-              <ion-input formControlName="name" inputmode="text" name="nombre" placeholder="Escribe tu nombre" required
+              <ion-input formControlName="name" inputmode="text" name="nombre" placeholder="Escribe el nombre" required
                 ngDefaultControl></ion-input>
             </ion-item>
             <ion-item>
@@ -63,7 +63,22 @@
               <ion-input formControlName="maxTime" inputmode="number" type="number" name="tiempoMaximo"
                 placeholder="Escribe un tiempo maximo en segundos" required ngDefaultControl></ion-input>
             </ion-item>
-            <ion-button expand="full" type="submit">Guardar</ion-button>
+            <ion-item>
+              <ion-label position="stacked">Dirección</ion-label>
+              <ion-input formControlName="address" inputmode="text" name="direccion" placeholder="Escribe la dirección"
+                required ngDefaultControl></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Descripción</ion-label>
+              <ion-input formControlName="description" inputmode="text" name="descripcion"
+                placeholder="Escribe la descripción" required ngDefaultControl></ion-input>
+            </ion-item>
+            <ion-button [disabled]="!zoneEditForm.valid" expand="full" type="submit">Guardar</ion-button>
+
+            <!-- Mensaje de Error -->
+            <ion-text *ngIf="zoneError" color="danger">
+              <p class="text-xs">{{ zoneError }}</p>
+            </ion-text>
           </form>
         </ion-content>
       </ng-template>
@@ -71,9 +86,6 @@
 
     <div class="flex justify-between items-center">
       <ion-text class="text-xl font-bold">Espacios</ion-text>
-      <ion-button fill="clear" (click)="openSpaceNew()">
-        <ion-icon slot="icon-only" name="add-circle-outline" size="large"></ion-icon>
-      </ion-button>
     </div>
 
     <div class="grid grid-cols-2 gap-4">
@@ -138,6 +150,10 @@
               </ion-select>
             </ion-item>
             <ion-button expand="full" type="submit">Guardar</ion-button>
+            <!-- Mensaje de Error -->
+            <ion-text *ngIf="spaceError" color="danger">
+              <p class="text-xs">{{ spaceError }}</p>
+            </ion-text>
           </form>
         </ion-content>
       </ng-template>

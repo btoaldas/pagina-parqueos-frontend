@@ -16,7 +16,9 @@ export class SpaceService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<ApiResponse<Array<SpaceResponse>>> {
-    return this.http.get<ApiResponse<Array<SpaceResponse>>>(this.apiUrl);
+    return this.http.get<ApiResponse<Array<SpaceResponse>>>(
+      this.apiUrl + `?_=${new Date().getTime()}`
+    );
   }
 
   updateSpace(
@@ -37,6 +39,7 @@ export class SpaceService {
     state: string,
     id_zone: number
   ): Observable<ApiResponse<boolean>> {
+    console.log({ id_zone });
     return this.http.post<ApiResponse<boolean>>(this.apiUrl, {
       type,
       state,

@@ -1,3 +1,5 @@
+import { FormGroup } from '@angular/forms';
+
 export class ErrorParser {
   public static handleError(err: any): string {
     if (err.error instanceof ErrorEvent) {
@@ -11,5 +13,20 @@ export class ErrorParser {
       }
     }
     return `Error desconocido: ${JSON.stringify(err)}`;
+  }
+
+  public static handleFormError(form: FormGroup<any>) {
+    let errorMessages: string[] = [];
+
+    Object.keys(form.controls).forEach((controlName) => {
+      const controlErrors = form.get(controlName)?.errors;
+      if (controlErrors) {
+        Object.keys(controlErrors).forEach((errorKey) => {
+          errorMessages.push(`Error in ${controlName}: ${errorKey}`);
+        });
+      }
+    });
+
+    return errorMessages.join(', ');
   }
 }

@@ -14,31 +14,41 @@ export class ZoneService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<ApiResponse<Array<ZoneType>>> {
-    return this.http.get<ApiResponse<Array<ZoneType>>>(this.apiUrl);
+    return this.http.get<ApiResponse<Array<ZoneType>>>(
+      this.apiUrl + `?_=${new Date().getTime()}`
+    );
   }
 
   updateZone(
     id: number,
     name: string,
     fee: string,
-    max_time: number
+    max_time: number,
+    address: string,
+    description: string
   ): Observable<ApiResponse<boolean>> {
     return this.http.put<ApiResponse<boolean>>(this.apiUrl + '/' + id, {
       name,
       fee,
       max_time,
+      address,
+      description,
     });
   }
 
   createZone(
     name: string,
     fee: string,
-    max_time: number
+    max_time: number,
+    address: string,
+    description: string
   ): Observable<ApiResponse<boolean>> {
     return this.http.post<ApiResponse<boolean>>(this.apiUrl, {
       name,
       fee,
       max_time,
+      address,
+      description,
     });
   }
 }
