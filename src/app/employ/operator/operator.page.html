@@ -76,7 +76,7 @@
                 <ion-select formControlName="plate" placeholder="Placa" inputmode="text" labelPlacement="floating"
                   label="Select Placa" ngDefaultControl>
                   @for (vehicle of vehicles; track vehicle.id) {
-                  <ion-select-option [value]="vehicle.plate">{{vehicle.plate}}</ion-select-option>
+                  <ion-select-option [value]="vehicle.id">{{vehicle.plate}}</ion-select-option>
                   }
                 </ion-select>
               </ion-item>
@@ -133,12 +133,11 @@
             <h2 class="py-4 font-bold text-xl px-2">Multa Formulario</h2>
             <form [formGroup]="fineForm" class="flex flex-col gap-4 py-8" (ngSubmit)="onFineSubmit()">
               <ion-item>
-                <ion-label position="stacked">Ticket</ion-label>
-                <ion-select formControlName="id_ticket" placeholder="Ticket" inputmode="text" labelPlacement="floating"
-                  label="Select Ticket" ngDefaultControl>
-                  @for (ticket of tickets; track ticket.id) {
-                  <ion-select-option [value]="ticket.id">#{{ticket.id}}
-                    {{ticket.plate}} / {{ticket.user.email}}</ion-select-option>
+                <ion-label position="stacked">Vehicle</ion-label>
+                <ion-select formControlName="id_ticket" placeholder="Vehiculo" inputmode="text"
+                  labelPlacement="floating" label="Select Vehiculo" ngDefaultControl>
+                  @for (vehicle of vehicles; track vehicle.id) {
+                  <ion-select-option [value]="vehicle.id">{{vehicle.plate}}</ion-select-option>
                   }
                 </ion-select>
               </ion-item>

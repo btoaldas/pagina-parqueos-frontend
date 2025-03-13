@@ -5,7 +5,6 @@ import { Observable, of, delay, tap } from 'rxjs';
 import { environment } from '@/environments/environment.prod';
 
 import { ApiResponse } from '../models/api-response.model';
-import { SpaceResponse, SpaceType } from '../models/space.model';
 import { TicketCreateModel, TicketModel } from '../models/ticket.model';
 
 @Injectable({
@@ -32,10 +31,10 @@ export class TicketService {
       );
   }
 
-  create(id_space: number, plate: string) {
+  create(id_space: number, id_vehicle: number) {
     return this.http.post<ApiResponse<TicketCreateModel>>(this.apiUrl, {
       id_space,
-      plate,
+      id_vehicle,
     });
   }
 

@@ -26,14 +26,17 @@ export class FineService {
   }
 
   create(
-    id_ticket: number,
+    id_vehicle: number,
     amount: number,
     description: string,
     image: Blob | null
   ) {
     const formData = new FormData();
     formData.append('image', image!, 'image.png');
-    formData.append('json', JSON.stringify({ id_ticket, amount, description }));
+    formData.append(
+      'json',
+      JSON.stringify({ id_vehicle, amount, description })
+    );
 
     return this.http.post(this.apiUrl, formData);
   }
