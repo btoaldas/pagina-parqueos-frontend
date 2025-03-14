@@ -63,8 +63,8 @@ export class ForgotPage implements OnInit {
       code: ['', [Validators.required, Validators.minLength(6)]],
     });
     this.passwordForm = this.fb.group({
-      newPassword: ['', [Validators.required, Validators.minLength(6)]],
-      repeatPassword: ['', [Validators.required, Validators.minLength(6)]],
+      newPassword: ['', [Validators.required, Validators.minLength(4)]],
+      repeatPassword: ['', [Validators.required, Validators.minLength(4)]],
     });
     addIcons({
       arrowBackOutline,

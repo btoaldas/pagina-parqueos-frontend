@@ -59,7 +59,33 @@
           Registra Salida
         </ion-button>
       </div>
+      }
+      }
+      @case ('multas') {
+      <ion-button (click)="openNewFine()">
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+        Registrar Multa
+      </ion-button>
+      <ion-searchbar (ionInput)="onSearch($event)" placeholder="Buscar por placa..." debounce="250"></ion-searchbar>
+      <ion-text class="text-2xl font-bold">Multas Activos</ion-text>
+      @for (fine of fines; track fine.id) {
+      <div class="flex flex-col bg-white dark:bg-gray-950 p-2 gap-2 rounded-md shadow-md">
+        <p class="text-sm">Fine #{{fine.id}}</p>
+        <p class="text-xl font-bold">{{fine.vehicle.plate}}</p>
+        <p>
+          {{fine.description}}
+        </p>
+        <ion-img class="object-cover aspect-square object-center" [src]="bakeImage(fine)"
+          [alt]="fine.description"></ion-img>
 
+        <ion-button [disabled]="fine.state !== 'pendiente'" (click)="onPayFine(fine.id)">
+          <ion-icon slot="start" name="log-out-outline"></ion-icon>
+          Pagar Multa
+        </ion-button>
+      </div>
+      }
+      }
+      }
       <ion-modal [isOpen]="isOpenNewOperator" class="dark:[--background:rgb(3_7_18)]">
         <ng-template>
           <ion-header>
@@ -94,33 +120,6 @@
           </ion-content>
         </ng-template>
       </ion-modal>
-      }
-      }
-      @case ('multas') {
-      <ion-button (click)="openNewFine()">
-        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
-        Registrar Multa
-      </ion-button>
-      <ion-searchbar (ionInput)="onSearch($event)" placeholder="Buscar por placa..." debounce="250"></ion-searchbar>
-      <ion-text class="text-2xl font-bold">Multas Activos</ion-text>
-      @for (fine of fines; track fine.id) {
-      <div class="flex flex-col bg-white dark:bg-gray-950 p-2 gap-2 rounded-md shadow-md">
-        <p class="text-sm">Fine #{{fine.id}}</p>
-        <p class="text-xl font-bold">{{fine.vehicle.plate}}</p>
-        <p>
-          {{fine.description}}
-        </p>
-        <ion-img class="object-cover aspect-square object-center" [src]="bakeImage(fine)"
-          [alt]="fine.description"></ion-img>
-
-        <ion-button [disabled]="fine.state !== 'pendiente'" (click)="onPayFine(fine.id)">
-          <ion-icon slot="start" name="log-out-outline"></ion-icon>
-          Pagar Multa
-        </ion-button>
-      </div>
-      }
-      }
-      }
       <ion-modal [isOpen]="isOpenNewFine" class="dark:[--background:rgb(3_7_18)]">
         <ng-template>
           <ion-header>
