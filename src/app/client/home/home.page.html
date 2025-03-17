@@ -113,8 +113,8 @@
             <span>${{fine.amount}}</span>
           </p>
         </div>
-        <ion-img class="object-cover object-center aspect-square rounded-md overflow-hidden" [src]="bakeImage(fine)"
-          [alt]="fine.id"></ion-img>
+        <ion-img class="object-cover object-center aspect-square rounded-md overflow-hidden"
+          [src]="bakeImage(fine.filename)" [alt]="fine.id"></ion-img>
       </div>
       }
 
@@ -124,21 +124,4 @@
     </div>
     }
   </div>
-
-  @if(role !== 'cliente'){
-  <ion-text class="text-lg px-2 font-bold">Acciones Rápidas</ion-text>
-
-  <div class="grid grid-cols-2 gap-4">
-    @for (item of fastAccesst(); track $index) {
-    <div class="bg-white dark:bg-gray-950 shadow-md rounded-md p-4 flex items-center justify-center"
-      (click)="item.action()">
-      <div class="flex flex-col items-center gap-2">
-        <ion-icon size="large" [name]="item.icon" class="p-3 rounded-xl" [ngClass]="item.classname"></ion-icon>
-        <ion-text>{{item.text}}</ion-text>
-      </div>
-    </div>
-    }
-  </div>
-  }
-
 </ion-content>

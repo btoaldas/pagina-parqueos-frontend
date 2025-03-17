@@ -73,13 +73,9 @@ export class HomePage implements OnInit {
     });
   }
 
-  bakeImage(fine?: FineProfile | null) {
-    if (!fine) return '';
-    const path =
-      environment.apiUrl + '/storage/fine/' + fine.id_ticket + '_' + fine.id;
-
-    if (fine.mime.includes('png')) return path + '.png';
-    else return path + '.jpg';
+  bakeImage(filename: string | null) {
+    if (!filename) return '';
+    return environment.apiUrl + '/storage/fine/' + filename;
   }
 
   getDate(): string {
@@ -100,32 +96,6 @@ export class HomePage implements OnInit {
     return `${prefix}${Intl.NumberFormat().format(
       Math.round(value * 100) / 100
     )}${sufix}`;
-  }
-
-  fastAccesst() {
-    return [
-      {
-        text: 'Nuevo Usuario',
-        classname:
-          'text-blue-600 bg-blue-200 dark:bg-blue-900 dark:text-blue-300',
-        icon: 'person-add-outline',
-        action: () => this.router.navigate(['/users/new']),
-      },
-      {
-        text: 'Gestionar Zonas',
-        classname:
-          'text-green-600 bg-green-200 dark:bg-green-900 dark:text-green-300',
-        icon: 'map-outline',
-        action: () => this.router.navigate(['/parking']),
-      },
-      {
-        text: 'Reportes',
-        classname:
-          'text-rose-600 bg-rose-200 dark:bg-rose-900 dark:text-rose-300',
-        icon: 'document-text-outline',
-        action: () => this.router.navigate(['/reports']),
-      },
-    ];
   }
 
   isOnTime(fechaObjetivo: Date) {
@@ -156,6 +126,7 @@ export class HomePage implements OnInit {
       next: (response) => {
         if (!response.data) return;
         this.tickets = response.data;
+        console.log(this.tickets);
       },
     });
     this.profileService.fines().subscribe({

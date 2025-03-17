@@ -23,7 +23,7 @@ export interface FineResponse {
 export interface FineProfile {
   id: number;
   amount: string;
-  mime: string;
+  filename: string;
   plate: string;
   state: string;
   id_ticket: number;
