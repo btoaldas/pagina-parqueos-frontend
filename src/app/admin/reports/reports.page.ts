@@ -21,6 +21,7 @@ import {
 } from 'ionicons/icons';
 import { StatsReportType } from '@/app/models/report.model';
 import { ReportService } from '@/app/services/report.service';
+import { DownloadReportsComponent } from '../../shared/download-reports/download-reports.component';
 
 @Component({
   selector: 'app-reports',
@@ -35,6 +36,7 @@ import { ReportService } from '@/app/services/report.service';
     IonToolbar,
     CommonModule,
     FormsModule,
+    DownloadReportsComponent,
   ],
 })
 export class ReportsPage implements OnInit {

@@ -23,6 +23,8 @@
       <ion-label>Parqueos</ion-label>
     </ion-tab-button>
 
+    }
+    @if(['admin', 'empleado'].includes(role)) {
     <ion-tab-button tab="reports" class="bg-gray-50 dark:bg-gray-950">
       <ion-icon name="stats-chart-outline"></ion-icon>
       <ion-label>Reportes</ion-label>
