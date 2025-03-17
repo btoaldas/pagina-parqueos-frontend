@@ -15,6 +15,18 @@ export class TicketService {
 
   constructor(private http: HttpClient) {}
 
+  get(id: number): Observable<ApiResponse<TicketModel>> {
+    return this.http.get<ApiResponse<TicketModel>>(this.apiUrl + '/' + id).pipe(
+      tap((response) => {
+        if (!response.data) return;
+        const ticket = response.data;
+
+        ticket.entry_date = new Date(ticket.entry_date);
+        ticket.exit_date = new Date(ticket.exit_date);
+      })
+    );
+  }
+
   getByPlate(plate: string): Observable<ApiResponse<Array<TicketModel>>> {
     return this.http
       .get<ApiResponse<Array<TicketModel>>>(this.apiUrl + '/plate/' + plate)
@@ -32,7 +44,7 @@ export class TicketService {
   }
 
   create(id_space: number, id_vehicle: number) {
-    return this.http.post<ApiResponse<TicketCreateModel>>(this.apiUrl, {
+    return this.http.post<ApiResponse<number>>(this.apiUrl, {
       id_space,
       id_vehicle,
     });

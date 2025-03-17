@@ -26,10 +26,13 @@ export class RoleGuard implements CanActivate {
       return false;
     }
 
-    if (withRole === 'empleado') return role === 'empleado' || role === 'admin';
-    if (withRole === 'admin') return role === 'admin';
-    if (withRole === 'cliente') return true;
+    const ok =
+      (withRole === 'empleado' && (role === 'empleado' || role === 'admin')) ||
+      (withRole === 'admin' && role === 'admin');
 
-    return false;
+    if (ok) return true;
+
+    this.router.navigate(['/home']);
+    return true;
   }
 }

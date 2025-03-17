@@ -119,13 +119,6 @@ export class HomePage implements OnInit {
         action: () => this.router.navigate(['/parking']),
       },
       {
-        text: 'Configuración',
-        classname:
-          'text-yellow-600 bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300',
-        icon: 'settings-outline',
-        action: () => {},
-      },
-      {
         text: 'Reportes',
         classname:
           'text-rose-600 bg-rose-200 dark:bg-rose-900 dark:text-rose-300',

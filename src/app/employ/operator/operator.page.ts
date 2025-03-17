@@ -50,6 +50,9 @@ import { SpaceResponse } from '@/app/models/space.model';
 import { FineResponse } from '@/app/models/fine.model';
 import { FineService } from '@/app/services/fine.service';
 import { environment } from '@/environments/environment.prod';
+import { TicketCreateComponent } from '../../shared/ticket-create/ticket-create.component';
+import { VehicleUserCreateComponent } from '../../shared/vehicle-user-create/vehicle-user-create.component';
+import { FineCreateComponent } from '../../shared/fine-create/fine-create.component';
 
 @Component({
   selector: 'app-operator',
@@ -64,7 +67,6 @@ import { environment } from '@/environments/environment.prod';
   standalone: true,
   imports: [
     IonImg,
-    IonModal,
     IonSearchbar,
     IonText,
     IonButton,
@@ -76,65 +78,26 @@ import { environment } from '@/environments/environment.prod';
     IonHeader,
     IonTitle,
     IonToolbar,
-    IonSelect,
-    IonSelectOption,
-    IonItem,
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    TicketCreateComponent,
+    VehicleUserCreateComponent,
+    FineCreateComponent,
   ],
 })
-export class OperatorPage implements OnInit, AfterViewInit {
+export class OperatorPage implements OnInit {
   selectedTab: 'tickets' | 'multas' = 'tickets';
-  tickets: TicketModel[] = [];
+
   searchTickets = new Subject<string>();
+  tickets: TicketModel[] = [];
+
   isOpenNewOperator: boolean = false;
   isOpenNewFine: boolean = false;
+
   vehicles: VehicleModel[] = [];
   spaces: SpaceResponse[] = [];
   fines: FineResponse[] = [];
-  ticketForm: FormGroup;
-  fineForm: FormGroup;
-  image: Blob | null = null;
-
-  @ViewChild('videoElement') videoElement!: ElementRef;
-  @ViewChild('canvasElement') canvasElement!: ElementRef;
-  videoStream!: MediaStream;
-
-  ngAfterViewInit() {}
-
-  useCamera() {
-    this.startCamera();
-  }
-
-  takePhoto() {
-    const video = this.videoElement.nativeElement;
-    const canvas = this.canvasElement.nativeElement;
-    const context = canvas.getContext('2d');
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    canvas.toBlob((blob: Blob | null) => {
-      this.image = blob;
-    });
-  }
-
-  startCamera() {
-    if (navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then((stream: MediaStream) => {
-          this.videoStream = stream;
-          this.videoElement.nativeElement.srcObject = stream;
-        })
-        .catch((err) => {
-          console.error('Error al acceder a camara', err);
-        });
-    }
-  }
 
   constructor(
     private vehicleService: VehicleService,
@@ -143,15 +106,6 @@ export class OperatorPage implements OnInit, AfterViewInit {
     private spaceService: SpaceService,
     private fb: FormBuilder
   ) {
-    this.ticketForm = this.fb.group({
-      plate: ['', [Validators.required]],
-      id_space: [0, [Validators.required, Validators.min(0)]],
-    });
-    this.fineForm = this.fb.group({
-      id_ticket: [0, [Validators.required, Validators.min(0)]],
-      amount: [0, [Validators.required, Validators.min(0)]],
-      description: ['', [Validators.required]],
-    });
     this.searchTickets
       .pipe(debounceTime(250)) // Espera 1 segundo (1000ms)
       .subscribe((s) => this.performSearch(s));
@@ -168,28 +122,6 @@ export class OperatorPage implements OnInit, AfterViewInit {
   bakeImage(fine?: FineResponse | null) {
     if (!fine) return '';
     return environment.apiUrl + '/storage/fine/' + fine.filename;
-  }
-
-  onSubmit() {
-    if (!this.ticketForm.valid) return;
-    const { plate, id_space } = this.ticketForm.value;
-    this.ticketService.create(id_space, plate).subscribe({
-      next: (response) => {
-        this.isOpenNewOperator = false;
-      },
-    });
-  }
-  onFineSubmit() {
-    if (!this.fineForm.valid) return;
-    const { id_ticket, amount, description } = this.fineForm.value;
-
-    this.fineService
-      .create(id_ticket, parseFloat(amount), description, this.image)
-      .subscribe({
-        next: (response) => {
-          this.isOpenNewFine = false;
-        },
-      });
   }
 
   onSearch(event: any): void {
@@ -228,14 +160,27 @@ export class OperatorPage implements OnInit, AfterViewInit {
 
   openNewFine() {
     this.isOpenNewFine = true;
-    this.useCamera();
   }
   openNewTicket() {
     this.isOpenNewOperator = true;
   }
-  closeNewTicket() {
-    this.isOpenNewOperator = false;
-    this.isOpenNewFine = false;
+
+  addTicket(id: number) {
+    this.ticketService.get(id).subscribe({
+      next: (response) => {
+        if (!response.data) return;
+        this.tickets.push(response.data);
+      },
+    });
+  }
+
+  addFine(id: number) {
+    this.fineService.get(id).subscribe({
+      next: (response) => {
+        if (!response.data) return;
+        this.fines.push(response.data);
+      },
+    });
   }
 
   ngOnInit() {
@@ -255,6 +200,7 @@ export class OperatorPage implements OnInit, AfterViewInit {
       next: (response) => {
         if (!response.data) return;
         this.tickets = response.data;
+        console.log(this.tickets);
       },
     });
     this.fineService.getFines().subscribe({

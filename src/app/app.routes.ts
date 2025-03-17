@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { TabsPage } from './shared/tabs/tabs.page';
+import { RoleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -40,16 +41,22 @@ export const routes: Routes = [
       },
       {
         path: 'operator',
+        canActivate: [RoleGuard],
+        data: { withRole: 'empleado' },
         loadComponent: () =>
           import('./employ/operator/operator.page').then((m) => m.OperatorPage),
       },
       {
         path: 'users',
+        canActivate: [RoleGuard],
+        data: { withRole: 'admin' },
         loadComponent: () =>
           import('./admin/users/users.page').then((m) => m.UsersPage),
       },
       {
         path: 'users/new',
+        canActivate: [RoleGuard],
+        data: { withRole: 'admin' },
         loadComponent: () =>
           import('./admin/users-new/users-new.page').then(
             (m) => m.UsersNewPage
@@ -57,6 +64,8 @@ export const routes: Routes = [
       },
       {
         path: 'users/edit/:id',
+        canActivate: [RoleGuard],
+        data: { withRole: 'admin' },
         loadComponent: () =>
           import('./admin/users-edit/users-edit.page').then(
             (m) => m.UsersEditPage
@@ -64,11 +73,15 @@ export const routes: Routes = [
       },
       {
         path: 'parking',
+        canActivate: [RoleGuard],
+        data: { withRole: 'admin' },
         loadComponent: () =>
           import('./admin/parking/parking.page').then((m) => m.ParkingPage),
       },
       {
         path: 'reports',
+        canActivate: [RoleGuard],
+        data: { withRole: 'admin' },
         loadComponent: () =>
           import('./admin/reports/reports.page').then((m) => m.ReportsPage),
       },

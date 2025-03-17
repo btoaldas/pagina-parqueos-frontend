@@ -86,82 +86,15 @@
       }
       }
       }
-      <ion-modal [isOpen]="isOpenNewOperator" class="dark:[--background:rgb(3_7_18)]">
-        <ng-template>
-          <ion-header>
-            <ion-toolbar>
-              <ion-button slot="start" color="medium" (click)="closeNewTicket()">Cancel</ion-button>
-              <ion-title>Crear Ticket</ion-title>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content class="modal-content">
-            <h2 class="py-4 font-bold text-xl px-2">Ticket Formulario</h2>
-            <form [formGroup]="ticketForm" class="flex flex-col gap-4 py-8" (ngSubmit)="onSubmit()">
-              <ion-item>
-                <ion-label position="stacked">Placa</ion-label>
-                <ion-select formControlName="plate" placeholder="Placa" inputmode="text" labelPlacement="floating"
-                  label="Select Placa" ngDefaultControl>
-                  @for (vehicle of vehicles; track vehicle.id) {
-                  <ion-select-option [value]="vehicle.id">{{vehicle.plate}}</ion-select-option>
-                  }
-                </ion-select>
-              </ion-item>
-              <ion-item>
-                <ion-label position="stacked">Espacios</ion-label>
-                <ion-select formControlName="id_space" placeholder="Espacio" inputmode="text" labelPlacement="floating"
-                  label="Select Espacio" ngDefaultControl>
-                  @for (space of spaces; track space.id) {
-                  <ion-select-option [value]="space.id">{{space.zone.id}}Z-{{space.id}}E</ion-select-option>
-                  }
-                </ion-select>
-              </ion-item>
-              <ion-button expand="full" type="submit" ngDefaultControl>Guardar Ticket</ion-button>
-            </form>
-          </ion-content>
-        </ng-template>
-      </ion-modal>
-      <ion-modal [isOpen]="isOpenNewFine" class="dark:[--background:rgb(3_7_18)]">
-        <ng-template>
-          <ion-header>
-            <ion-toolbar>
-              <ion-button slot="start" color="medium" (click)="closeNewTicket()">Cancel</ion-button>
-              <ion-title>Crear Multa</ion-title>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content class="modal-content">
-            <h2 class="py-4 font-bold text-xl px-2">Multa Formulario</h2>
-            <form [formGroup]="fineForm" class="flex flex-col gap-4 py-8" (ngSubmit)="onFineSubmit()">
-              <ion-item>
-                <ion-label position="stacked">Vehicle</ion-label>
-                <ion-select formControlName="id_ticket" placeholder="Vehiculo" inputmode="text"
-                  labelPlacement="floating" label="Select Vehiculo" ngDefaultControl>
-                  @for (vehicle of vehicles; track vehicle.id) {
-                  <ion-select-option [value]="vehicle.id">{{vehicle.plate}}</ion-select-option>
-                  }
-                </ion-select>
-              </ion-item>
-              <ion-item>
-                <ion-label position="stacked">Monto</ion-label>
-                <ion-input formControlName="amount" inputmode="number" type="number" name="Monto"
-                  placeholder="Escribe el monto" required ngDefaultControl></ion-input>
-              </ion-item>
-              <ion-item>
-                <ion-label position="stacked">Descripcion</ion-label>
-                <ion-input formControlName="description" inputmode="text" type="text" name="Monto"
-                  placeholder="Descripcion" required ngDefaultControl></ion-input>
-              </ion-item>
-              <ion-button fill="clear" (click)="takePhoto()">Tomar Foto</ion-button>
-              <ion-item class="relative">
-                <video class="w-full object-cover" #videoElement autoplay></video>
-                <canvas
-                  class="absolute left-2 bottom-2 w-24 aspect-square object-cover object-center bg-black/50 rounded-md overflow-hidden"
-                  #canvasElement></canvas>
-              </ion-item>
-              <ion-button expand="full" type="submit" ngDefaultControl>Guardar Ticket</ion-button>
-            </form>
-          </ion-content>
-        </ng-template>
-      </ion-modal>
+
+      <app-ticket-create [(show)]="isOpenNewOperator" [vehicles]="vehicles" [spaces]="spaces"
+        (addTicket)="addTicket($event)">
+        <app-vehicle-user-create [(vehicles)]="vehicles" />
+      </app-ticket-create>
+
+      <app-fine-create [(show)]="isOpenNewFine" [vehicles]="vehicles" (addFine)="addFine($event)">
+        <app-vehicle-user-create [(vehicles)]="vehicles" />
+      </app-fine-create>
     </div>
   </div>
 </ion-content>

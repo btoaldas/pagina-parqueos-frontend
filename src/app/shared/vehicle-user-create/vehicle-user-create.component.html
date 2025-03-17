@@ -1,0 +1,43 @@
+<form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+  <!-- Title for vehicles -->
+  <h2 class="py-4 font-bold text-xl px-2">Vehiculo Formulario</h2>
+  <ion-item>
+    <ion-label position="stacked">Placa</ion-label>
+    <ion-input formControlName="plate" inputmode="text" type="text" name="Placa" placeholder="Placa" required
+      ngDefaultControl></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Marca</ion-label>
+    <ion-input formControlName="brand" inputmode="text" type="text" name="Marca" placeholder="Marca" required
+      ngDefaultControl></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Modelo</ion-label>
+    <ion-input formControlName="model" inputmode="text" type="text" name="Modelo" placeholder="Modelo" required
+      ngDefaultControl></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Año</ion-label>
+    <ion-input formControlName="year" inputmode="numeric" type="number" name="Año" placeholder="Año" required
+      ngDefaultControl></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Base Imponible</ion-label>
+    <ion-input formControlName="taxable_base" inputmode="numeric" type="number" name="Base Imponible"
+      placeholder="Base Imponible" required ngDefaultControl></ion-input>
+  </ion-item>
+
+  <ion-button [disabled]="loading" expand="full" type="submit" ngDefaultControl>Guardar Vehiculo</ion-button>
+
+  <!-- show error 'errorMessage' if not null -->
+  @if(errorMessage) {
+  <ion-text color="danger">
+    <p>{{ errorMessage }}</p>
+  </ion-text>
+  }
+  @if(successMessage) {
+  <ion-text color="success">
+    <p>{{ successMessage }}</p>
+  </ion-text>
+  }
+</form>

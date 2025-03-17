@@ -1,0 +1,53 @@
+<ion-modal [isOpen]="show" class="dark:[--background:rgb(3_7_18)]">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-button slot="start" color="medium" (click)="close()">Cancel</ion-button>
+        <ion-title>Crear Multa</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="modal-content">
+      <h2 class="py-4 font-bold text-xl px-2">Multa Formulario</h2>
+      <div class="px-2 m-2 border border-zinc-300 dark:border-zinc-800 rounded-md flex flex-col gap-4">
+        <ion-button fill="clear" expand="full" (click)="showVehicle = !showVehicle">
+          {{ showVehicle ? 'Ocultar' : 'Crear Vehiculo' }}
+        </ion-button>
+        @if (showVehicle) {
+        <ng-content></ng-content>
+        }
+      </div>
+      <form [formGroup]="fineForm" class="flex flex-col gap-4 py-8" (ngSubmit)="onSubmit()">
+        <ion-item>
+          <ion-label position="stacked">Vehicle</ion-label>
+          <ion-select formControlName="id_ticket" placeholder="Vehiculo" inputmode="text" labelPlacement="floating"
+            label="Select Vehiculo" ngDefaultControl>
+            @for (vehicle of vehicles; track vehicle.id) {
+            <ion-select-option [value]="vehicle.id">{{vehicle.plate}}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Monto</ion-label>
+          <ion-input formControlName="amount" inputmode="number" type="number" name="Monto"
+            placeholder="Escribe el monto" required ngDefaultControl></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Descripcion</ion-label>
+          <ion-input formControlName="description" inputmode="text" type="text" name="Monto" placeholder="Descripcion"
+            required ngDefaultControl></ion-input>
+        </ion-item>
+        <ion-button fill="clear" (click)="takePhoto()">Tomar Foto</ion-button>
+        <ion-item class="relative">
+          <video class="w-full object-cover" #videoElement autoplay></video>
+          <canvas
+            class="absolute left-2 bottom-2 w-24 aspect-square object-cover object-center bg-black/50 rounded-md overflow-hidden"
+            #canvasElement></canvas>
+        </ion-item>
+        <ion-button expand="full" type="submit" ngDefaultControl>Guardar Ticket</ion-button>
+        @if(errorMessage) {
+        <ion-text color="danger">{{errorMessage}}</ion-text>
+        }
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>

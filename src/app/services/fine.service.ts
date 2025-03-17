@@ -17,6 +17,10 @@ export class FineService {
 
   constructor(private http: HttpClient) {}
 
+  get(id: number) {
+    return this.http.get<ApiResponse<FineResponse>>(this.apiUrl + '/' + id);
+  }
+
   getFines(): Observable<ApiResponse<FineResponse[]>> {
     return this.http.get<ApiResponse<FineResponse[]>>(this.apiUrl);
   }
@@ -30,7 +34,7 @@ export class FineService {
     amount: number,
     description: string,
     image: Blob | null
-  ) {
+  ): Observable<ApiResponse<number>> {
     const formData = new FormData();
     formData.append('image', image!, 'image.png');
     formData.append(
@@ -38,6 +42,6 @@ export class FineService {
       JSON.stringify({ id_vehicle, amount, description })
     );
 
-    return this.http.post(this.apiUrl, formData);
+    return this.http.post<ApiResponse<number>>(this.apiUrl, formData);
   }
 }
