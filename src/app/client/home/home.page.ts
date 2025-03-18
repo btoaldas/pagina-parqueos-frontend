@@ -30,6 +30,7 @@ import { ProfileService } from '@/app/services/profile.service';
 import { TicketProfile } from '@/app/models/ticket.model';
 import { FineProfile, FineResponse } from '@/app/models/fine.model';
 import { environment } from '@/environments/environment.prod';
+import { SpotsMapComponent } from '../../shared/spots-map/spots-map.component';
 
 @Component({
   selector: 'page-home',
@@ -45,6 +46,7 @@ import { environment } from '@/environments/environment.prod';
     IonToolbar,
     CommonModule,
     FormsModule,
+    SpotsMapComponent,
   ],
 })
 export class HomePage implements OnInit {

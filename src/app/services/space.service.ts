@@ -16,9 +16,28 @@ export class SpaceService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<ApiResponse<Array<SpaceResponse>>> {
-    return this.http.get<ApiResponse<Array<SpaceResponse>>>(
-      this.apiUrl + `?_=${new Date().getTime()}`
-    );
+    return this.http
+      .get<ApiResponse<Array<SpaceResponse>>>(
+        this.apiUrl + `?_=${new Date().getTime()}`
+      )
+      .pipe(
+        tap({
+          next: (response) => {
+            if (!response.data) return;
+
+            const spaces = response.data;
+
+            for (let i = 0; i < spaces.length; i++) {
+              spaces[i].latitude = parseFloat(
+                spaces[i].latitude as unknown as string
+              );
+              spaces[i].longitude = parseFloat(
+                spaces[i].longitude as unknown as string
+              );
+            }
+          },
+        })
+      );
   }
 
   getAllByZone(id: number): Observable<ApiResponse<Array<SpaceResponse>>> {
