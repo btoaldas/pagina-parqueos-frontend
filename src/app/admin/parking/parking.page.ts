@@ -92,8 +92,10 @@ export class ParkingPage implements OnInit {
       description: ['', [Validators.required]],
     });
     this.spaceEditForm = this.fb.group({
-      state: ['ocupado', [Validators.required]],
+      state: ['disponible', [Validators.required]],
       type: ['automovil', [Validators.required]],
+      latitude: [0, [Validators.required, Validators.min(0)]],
+      longitude: [0, [Validators.required, Validators.min(0)]],
     });
     addIcons({
       addCircleOutline,
@@ -209,17 +211,19 @@ export class ParkingPage implements OnInit {
       return;
     }
 
-    const { state, type } = this.spaceEditForm.value;
+    const { state, type, latitude, longitude } = this.spaceEditForm.value;
 
     if (this.isNewZone) {
-      this.spaceService.createSpace(type, state, this.zoneEditIndex).subscribe({
-        next: (response) => {
-          console.log({ response });
-          this.isSpaceNewOpen = false;
-        },
-        complete: () => this.onFocusZone(this.zoneEditIndex),
-        error: (err) => (this.spaceError = ErrorParser.handleError(err)),
-      });
+      this.spaceService
+        .createSpace(type, state, latitude, longitude, this.zoneEditIndex)
+        .subscribe({
+          next: (response) => {
+            console.log({ response });
+            this.isSpaceNewOpen = false;
+          },
+          complete: () => this.onFocusZone(this.zoneEditIndex),
+          error: (err) => (this.spaceError = ErrorParser.handleError(err)),
+        });
     } else {
       this.spaceService
         .updateSpace(this.spaceEditIndex, type, state, this.zoneEditIndex)

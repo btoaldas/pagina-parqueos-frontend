@@ -136,8 +136,8 @@
               <ion-label position="stacked">Estado</ion-label>
               <ion-select formControlName="state" placeholder="Estado" inputmode="text" labelPlacement="floating"
                 label="Select Estado">
-                <ion-select-option value="ocupado">Ocupado</ion-select-option>
                 <ion-select-option value="disponible">Disponible</ion-select-option>
+                <ion-select-option value="ocupado">Ocupado</ion-select-option>
               </ion-select>
             </ion-item>
             <ion-item>
@@ -148,6 +148,16 @@
                 <ion-select-option value="moto">Moto</ion-select-option>
                 <ion-select-option value="discapacitado">Discapacitado</ion-select-option>
               </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Latitud</ion-label>
+              <ion-input formControlName="latitude" inputmode="number" type="number" name="latitude"
+                placeholder="Escribe la latitud" required ngDefaultControl></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Longitud</ion-label>
+              <ion-input formControlName="longitude" inputmode="number" type="number" name="longitude"
+                placeholder="Escribe la longitud" required ngDefaultControl></ion-input>
             </ion-item>
             <ion-button expand="full" type="submit">Guardar</ion-button>
             <!-- Mensaje de Error -->

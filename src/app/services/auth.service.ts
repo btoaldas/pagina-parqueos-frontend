@@ -23,6 +23,10 @@ export class AuthService {
     return localStorage.getItem('authRole');
   }
 
+  getId() {
+    return localStorage.getItem('authId');
+  }
+
   logout() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('authRole');
