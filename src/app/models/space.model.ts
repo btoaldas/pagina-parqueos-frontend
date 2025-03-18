@@ -5,6 +5,8 @@ export interface SpaceBase {
 }
 
 export interface SpaceResponse extends SpaceBase {
+  latitude: number;
+  longitude: number;
   zone: {
     id: number;
   };
