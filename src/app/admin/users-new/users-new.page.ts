@@ -84,7 +84,9 @@ export class UsersNewPage implements OnInit {
 
       this.userService.createOne(data).subscribe({
         next: (response) => {
-          this.router.navigate(['/users']);
+          this.router.navigateByUrl('/users').then(() => {
+            window.location.reload();
+          });
         },
         error: (error) => {
           this.submitError = JSON.stringify(error);

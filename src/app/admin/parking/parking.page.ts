@@ -94,8 +94,8 @@ export class ParkingPage implements OnInit {
     this.spaceEditForm = this.fb.group({
       state: ['disponible', [Validators.required]],
       type: ['automovil', [Validators.required]],
-      latitude: [0, [Validators.required, Validators.min(0)]],
-      longitude: [0, [Validators.required, Validators.min(0)]],
+      latitude: [0, [Validators.required]],
+      longitude: [0, [Validators.required]],
     });
     addIcons({
       addCircleOutline,
