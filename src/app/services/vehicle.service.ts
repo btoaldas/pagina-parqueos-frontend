@@ -21,4 +21,23 @@ export class VehicleService {
   createVehicle(vehicle: VehicleRequest) {
     return this.http.post<ApiResponse<number>>(this.apiUrl, vehicle);
   }
+
+  getVehiclesWithoutUser() {
+    return this.http.get<ApiResponse<VehicleModel[]>>(
+      `${this.apiUrl}/without-user`
+    );
+  }
+
+  getVehiclesByUser(id: number) {
+    return this.http.get<ApiResponse<VehicleModel[]>>(
+      `${this.apiUrl}/user/${id}`
+    );
+  }
+
+  updateVehicleUser(idVehicle: number, idUser: number) {
+    return this.http.put<ApiResponse<boolean>>(`${this.apiUrl}/update`, {
+      id_vehicle: idVehicle,
+      id_user: idUser,
+    });
+  }
 }

@@ -23,6 +23,7 @@ import {
   personCircle,
   personCircleOutline,
   checkmarkCircleOutline,
+  carOutline,
 } from 'ionicons/icons';
 import { debounceTime, Subject } from 'rxjs';
 import { UserType } from '@/app/models/user.model';
@@ -59,6 +60,7 @@ export class UsersPage implements OnInit {
     addIcons({
       addOutline,
       personCircleOutline,
+      carOutline,
       closeCircleOutline,
       checkmarkCircleOutline,
       createOutline,
@@ -102,5 +104,11 @@ export class UsersPage implements OnInit {
 
   onEditUser(id: number) {
     this.router.navigate(['/users/edit/' + id]);
+  }
+
+  onVehicleUpdate(id: number) {
+    this.router.navigateByUrl('/vehicles/edit/' + id).then(() => {
+      window.location.reload();
+    });
   }
 }

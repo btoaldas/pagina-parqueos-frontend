@@ -32,6 +32,9 @@
             {{user.role.toUpperCase()}}</p>
         </div>
         <div class="flex justify-end">
+          <ion-button color="success" fill="clear" size="small" (click)="onVehicleUpdate(user.id)">
+            <ion-icon name="car-outline"></ion-icon>
+          </ion-button>
           @if(user.state) {
           <ion-button color="danger" fill="clear" size="small" (click)="onSwitch(user.id, 0)">
             <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>

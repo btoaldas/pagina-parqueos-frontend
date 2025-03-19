@@ -72,6 +72,15 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'vehicles/edit/:id',
+        canActivate: [RoleGuard],
+        data: { withRole: 'admin' },
+        loadComponent: () =>
+          import('./admin/vehicles-edit/vehicles-edit.page').then(
+            (m) => m.VehiclesEditPage
+          ),
+      },
+      {
         path: 'parking',
         canActivate: [RoleGuard],
         data: { withRole: 'admin' },
@@ -89,4 +98,11 @@ export const routes: Routes = [
     ],
   },
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
+  {
+    path: 'vehicles-edit',
+    loadComponent: () =>
+      import('./admin/vehicles-edit/vehicles-edit.page').then(
+        (m) => m.VehiclesEditPage
+      ),
+  },
 ];

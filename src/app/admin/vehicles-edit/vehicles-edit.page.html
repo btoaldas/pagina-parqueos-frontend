@@ -1,0 +1,53 @@
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar color="primary">
+      <ion-title size="large">Vehiculos {{this.user?.name}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div class="bg-gray-100 dark:bg-gray-900 gap-2 flex flex-col p-2 min-h-full">
+    <div class="grid grid-cols-2 gap-2">
+      @for (vehicle of vehicles; track vehicle.id) {
+      <!-- View Info of vehicles -->
+      <div class="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-md">
+        <p class="text-blue-600 font-bold text-xl">{{vehicle.plate}}</p>
+        <p>Brand: {{vehicle.brand}}</p>
+        <p>Model: {{vehicle.model}}</p>
+        <p>Year: {{vehicle.year}}</p>
+      </div>
+      }
+    </div>
+
+    <div class="grid grid-cols-2">
+      <ion-button (click)="onNew()" [disabled]="loading" fill="clear"
+        class="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-md">
+        <ion-icon name="add-outline"></ion-icon>
+        Nuevo
+      </ion-button>
+      <ion-button (click)="onExisting()" [disabled]="loading" fill="clear"
+        class="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-md">
+        <ion-icon name="add-outline"></ion-icon>
+        Existente
+      </ion-button>
+    </div>
+
+    @if(kind === 'new') {
+    <ion-text class="text-xl">Crear Vehiculo</ion-text>
+    <ion-button color="danger" (click)="onClose()">Cerrar</ion-button>
+    <app-vehicle-user-create (onClose)="onClose()" [id_user]="user?.id ?? null" [(vehicles)]="vehicles" />
+    }
+
+    @if(kind === 'existing') {
+    <ion-text class="text-xl">Seleccionar Vehiculo existente</ion-text>
+    <ion-button color="danger" (click)="onClose()">Cerrar</ion-button>
+    <div class="w-full flex flex-col gap-2">
+      @for(vehicle of vehiclesWithoutUser; track vehicle.id) {
+      <ion-button (click)="onSelectExisting(vehicle.id)" [disabled]="loadingSecondary"
+        class="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-md">
+        <p class="font-bold text-xl">Placa: {{vehicle.plate}}</p>
+      </ion-button>
+      }
+    </div>
+    }
+
+  </div>
+</ion-content>

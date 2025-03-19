@@ -23,10 +23,13 @@ import {
 })
 export class VehicleUserCreateComponent implements OnInit {
   @Input() vehicles: VehicleModel[] = [];
+  @Input() id_user: number | null = null;
 
   @Output() vehiclesChange: EventEmitter<VehicleModel[]> = new EventEmitter<
     VehicleModel[]
   >();
+
+  @Output() onClose: EventEmitter<void> = new EventEmitter<void>();
 
   vehicleForm: FormGroup;
   errorMessage: string | null = null;
@@ -51,7 +54,7 @@ export class VehicleUserCreateComponent implements OnInit {
     this.loading = true;
 
     this.vehicleService
-      .createVehicle({ ...this.vehicleForm.value, id_user: null })
+      .createVehicle({ ...this.vehicleForm.value, id_user: this.id_user })
       .subscribe({
         next: (vehicle) => {
           if (vehicle.data == null) return;
@@ -59,8 +62,14 @@ export class VehicleUserCreateComponent implements OnInit {
           this.vehicles.push({
             id: vehicle.data,
             plate: this.vehicleForm.value.plate,
+            brand: this.vehicleForm.value.brand,
+            model: this.vehicleForm.value.model,
+            year: this.vehicleForm.value.year,
+            taxable_base: this.vehicleForm.value.taxable_base,
+            id_user: this.id_user,
           });
           this.vehiclesChange.emit(this.vehicles);
+          this.onClose.emit();
 
           this.successMessage = 'Vehicle created successfully';
         },
