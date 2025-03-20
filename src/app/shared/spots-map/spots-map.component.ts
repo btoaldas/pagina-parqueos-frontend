@@ -19,6 +19,7 @@ import * as L from 'leaflet';
 export class SpotsMapComponent implements OnInit {
   private map: L.Map | null = null;
   private spaces: SpaceResponse[] = [];
+  private markers: L.Marker[] = [];
 
   private iconLocationRed: string;
   private iconLocationGreen: string;
@@ -32,12 +33,8 @@ export class SpotsMapComponent implements OnInit {
   }
 
   private initMap(): void {
-    this.map = L.map('map').setView([20, 0], 2);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(this.map);
+    this.markers.forEach((marker) => marker.remove());
+    this.markers = [];
 
     const markerGreenIcon = L.icon({
       iconUrl: this.iconLocationGreen,
@@ -57,8 +54,11 @@ export class SpotsMapComponent implements OnInit {
         icon: space.state === 'disponible' ? markerGreenIcon : markerRedIcon,
       })
         .addTo(this.map!)
-        .bindPopup(`<b>${space.id}</b><br>Status: ${space.state}`)
+        .bindPopup(
+          `<b>${space.zone.id}Z-${space.id}S</b><br>Status: ${space.state}`
+        )
         .on('click', () => this.openGoogleMaps(space));
+      this.markers.push(marker);
     });
   }
 
@@ -67,17 +67,27 @@ export class SpotsMapComponent implements OnInit {
     window.open(url, '_blank');
   }
 
-  ngOnInit() {
+  public loadMap(): void {
     this.spaceService.getAll().subscribe({
       next: (response) => {
         if (!response.data) return;
         this.spaces = response.data;
-        console.log(this.spaces);
         this.initMap();
       },
       error: (error) => {
         console.log(error);
       },
     });
+  }
+
+  ngOnInit() {
+    this.map = L.map('map').setView([20, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(this.map);
+
+    this.loadMap();
   }
 }

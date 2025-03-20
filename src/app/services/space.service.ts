@@ -50,12 +50,16 @@ export class SpaceService {
     id: number,
     type: string,
     state: string,
+    latitude: number,
+    longitude: number,
     id_zone: number
   ): Observable<ApiResponse<boolean>> {
     return this.http.put<ApiResponse<boolean>>(this.apiUrl + '/' + id, {
       type,
       state,
       id_zone,
+      latitude,
+      longitude,
     });
   }
 

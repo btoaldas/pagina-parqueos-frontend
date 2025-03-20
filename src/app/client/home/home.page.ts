@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -55,6 +55,8 @@ export class HomePage implements OnInit {
   tickets: TicketProfile[] = [];
   fines: FineProfile[] = [];
 
+  @ViewChild(SpotsMapComponent) spotsMapComponent!: SpotsMapComponent;
+
   constructor(
     private router: Router,
     private reportService: ReportService,
@@ -73,6 +75,12 @@ export class HomePage implements OnInit {
       settingsOutline,
       documentTextOutline,
     });
+  }
+
+  ionViewWillEnter() {
+    if (!this.spotsMapComponent) return;
+
+    this.spotsMapComponent.loadMap();
   }
 
   bakeImage(filename: string | null) {
@@ -128,7 +136,6 @@ export class HomePage implements OnInit {
       next: (response) => {
         if (!response.data) return;
         this.tickets = response.data;
-        console.log(this.tickets);
       },
     });
     this.profileService.fines().subscribe({
