@@ -183,10 +183,12 @@ export class OperatorPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  /* init ionic view */
+  ionViewWillEnter() {
     this.spaceService.getAll().subscribe({
       next: (response) => {
         if (!response.data) return;
+        console.log({ space: response.data });
         this.spaces = response.data;
       },
     });
@@ -210,4 +212,6 @@ export class OperatorPage implements OnInit {
       },
     });
   }
+
+  ngOnInit() {}
 }

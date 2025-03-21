@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://192.168.1.16/uniandes-web/api/v1',
+  apiUrl: 'http://192.168.1.5/uniandes-web/api/v1',
 };
 
 /*
