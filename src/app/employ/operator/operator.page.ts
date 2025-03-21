@@ -135,6 +135,7 @@ export class OperatorPage implements OnInit {
         const ticket = this.tickets.find((t) => t.id === id);
         if (!ticket) return;
         ticket.state = 'finalizado';
+        this.reload();
       },
     });
   }
@@ -145,6 +146,7 @@ export class OperatorPage implements OnInit {
         const fine = this.fines.find((f) => f.id === id);
         if (!fine) return;
         fine.state = 'pagada';
+        this.reload();
       },
     });
   }
@@ -184,7 +186,7 @@ export class OperatorPage implements OnInit {
   }
 
   /* init ionic view */
-  ionViewWillEnter() {
+  reload() {
     this.spaceService.getAll().subscribe({
       next: (response) => {
         if (!response.data) return;
@@ -211,6 +213,10 @@ export class OperatorPage implements OnInit {
         this.fines = response.data;
       },
     });
+  }
+
+  ionViewWillEnter() {
+    this.reload();
   }
 
   ngOnInit() {}
