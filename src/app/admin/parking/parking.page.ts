@@ -126,10 +126,13 @@ export class ParkingPage implements OnInit {
     this.isNewZone = false;
     const zone = this.zones.find((z) => z.id === id);
     if (!zone) return;
+    console.log({ zone });
     this.zoneEditForm.setValue({
       name: zone.name,
       fee: parseFloat(zone.fee),
-      maxTime: zone.max_time,
+      maxTime: zone.max_time / 1000,
+      address: zone.address,
+      description: zone.description,
     });
   }
 
@@ -202,6 +205,8 @@ export class ParkingPage implements OnInit {
     this.spaceEditForm.setValue({
       state: space.state,
       type: space.type,
+      latitude: space.latitude,
+      longitude: space.longitude,
     });
   }
 
