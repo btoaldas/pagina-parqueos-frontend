@@ -49,6 +49,8 @@ export class SpotsMapComponent implements OnInit {
       popupAnchor: [1, -34],
     });
 
+    const latLngs: L.LatLngExpression[] = [];
+
     this.spaces.forEach((space) => {
       const marker = L.marker([space.latitude, space.longitude], {
         icon: space.state === 'disponible' ? markerGreenIcon : markerRedIcon,
@@ -59,7 +61,14 @@ export class SpotsMapComponent implements OnInit {
         )
         .on('click', () => this.openGoogleMaps(space));
       this.markers.push(marker);
+      latLngs.push([space.latitude, space.longitude]);
     });
+
+    if (latLngs.length > 0) {
+      const bounds = L.latLngBounds(latLngs);
+      this.map!.fitBounds(bounds);
+      this.map!.setZoom(10);
+    }
   }
 
   openGoogleMaps(spot: SpaceResponse) {
