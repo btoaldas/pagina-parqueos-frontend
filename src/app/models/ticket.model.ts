@@ -2,7 +2,7 @@ export interface TicketModel {
   id: number;
   plate: string;
   entry_date: Date;
-  exit_date: Date;
+  exit_date: Date | null;
   amount: number;
   state: string;
   user: {

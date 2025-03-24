@@ -21,8 +21,10 @@ export class TicketService {
         if (!response.data) return;
         const ticket = response.data;
 
-        ticket.entry_date = new Date(ticket.entry_date);
-        ticket.exit_date = new Date(ticket.exit_date);
+        ticket.entry_date = new Date(ticket.entry_date + 'Z');
+
+        if (ticket.exit_date == null) return;
+        ticket.exit_date = new Date(ticket.exit_date + 'Z');
       })
     );
   }
@@ -36,8 +38,12 @@ export class TicketService {
 
           const tickets = response.data;
           for (let i = 0; i < tickets.length; i++) {
-            tickets[i].entry_date = new Date(tickets[i].entry_date);
-            tickets[i].exit_date = new Date(tickets[i].exit_date);
+            const ticket = tickets[i];
+
+            ticket.entry_date = new Date(ticket.entry_date + 'Z');
+
+            if (ticket.exit_date == null) continue;
+            ticket.exit_date = new Date(ticket.exit_date + 'Z');
           }
         })
       );
