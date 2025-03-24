@@ -130,7 +130,7 @@ export class ParkingPage implements OnInit {
     this.zoneEditForm.setValue({
       name: zone.name,
       fee: parseFloat(zone.fee),
-      maxTime: zone.max_time / 1000,
+      maxTime: zone.max_time / 3600,
       address: zone.address,
       description: zone.description,
     });
