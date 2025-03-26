@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://192.168.1.6:8080/api/v1',
+  apiUrl: 'http://localhost/pagina-parqueos-backend/api/v1',
 };

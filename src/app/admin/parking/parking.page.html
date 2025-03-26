@@ -8,16 +8,15 @@
   <div class="py-2 px-4 bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col gap-3">
     <div class="flex justify-between items-center">
       <ion-text class="text-xl font-bold">Zonas</ion-text>
-      <ion-button (click)="openEditZone()" fill="clear">
+      <ion-button (click)="openEditZone(-1)" fill="clear">
         <ion-icon slot="icon-only" name="add-circle-outline" size="large"></ion-icon>
       </ion-button>
     </div>
 
-    <div
-      class="min-h-36 overflow-x-scroll items-center overflow-y-hidden flex whitespace-nowrap scroll-smooth [scroll-snap-type:x_mandatory]">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       @for(zone of zones; track zone.id) {
-      <div class="h-36  [flex:0_0_50%] flex items-center justify-center">
-        <div class="flex flex-col bg-white dark:bg-gray-950 p-2 gap-2 rounded-md shadow-md">
+      
+        <div class="flex flex-col bg-white dark:bg-gray-950 p-2  rounded-md shadow-md">
           <ion-button size="small" fill="{{buttonFocus === zone.id ? 'solid' : 'clear'}}" color="primary"
             (click)="onFocusZone(zone.id)">
             <ion-icon slot="start" name="location-outline"></ion-icon>
@@ -33,16 +32,19 @@
             </ion-button>
           </div>
         </div>
-      </div>
-      }
+        }  
+        <ion-button class=" h-36 bg-blue-600/20 rounded-lg" fill="clear" (click)="openEditZone(-1)">
+          <ion-icon size="large" slot="icon-only" name="add-circle-outline"></ion-icon>
+        </ion-button>
+       
     </div>
 
     <ion-modal [isOpen]="isZoneEditOpen" class="dark:[--background:rgb(3_7_18)]">
       <ng-template>
         <ion-header>
           <ion-toolbar>
-            <ion-button slot="start" color="medium" (click)="closeModals()">Cancel</ion-button>
-            <ion-title>{{isNewZone ? 'Crear Nuevo' :'Edit Zone'}}</ion-title>
+            <ion-button slot="start" color="medium" (click)="closeModals()">Cancelar</ion-button>
+            <ion-title>{{isNewZone ? 'Crear Nuevo Zona' :'Editar Zona'}}</ion-title>
           </ion-toolbar>
         </ion-header>
         <ion-content class="modal-content">
@@ -88,7 +90,7 @@
       <ion-text class="text-xl font-bold">Espacios</ion-text>
     </div>
 
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       @for (space of spaces; track space.id) {
       <div
         class="h-36 shadow-md p-2  bg-white dark:bg-gray-950 rounded-lg flex flex-col justify-between [flex:0_0_50%]">
@@ -125,30 +127,43 @@
       <ng-template>
         <ion-header>
           <ion-toolbar>
-            <ion-button slot="start" color="medium" (click)="closeModals()">Cancel</ion-button>
-            <ion-title>New Space</ion-title>
+            <ion-button slot="start" color="medium" (click)="closeModals()">Cancelar</ion-button>
+            <ion-title>Espacio</ion-title>
           </ion-toolbar>
         </ion-header>
         <ion-content class="modal-content">
           <h2 class="py-4 font-bold text-xl">Editar información</h2>
           <form [formGroup]="spaceEditForm" class="flex flex-col gap-4 py-8" (ngSubmit)="saveSpaceNew()">
             <ion-item>
-              <ion-label position="stacked">Estado</ion-label>
-              <ion-select formControlName="state" placeholder="Estado" inputmode="text" labelPlacement="floating"
-                label="Select Estado">
-                <ion-select-option value="disponible">Disponible</ion-select-option>
-                <ion-select-option value="ocupado">Ocupado</ion-select-option>
-              </ion-select>
+              <ion-label>Estado</ion-label>
+              <ion-segment formControlName="state" ngDefaultControl class="custom-segment">
+                <ion-segment-button value="disponible" class="custom-segment-button">
+                  <ion-label>Disponible</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="ocupado" class="custom-segment-button">
+                  <ion-label>Ocupado</ion-label>
+                </ion-segment-button>
+              </ion-segment>
             </ion-item>
+            
             <ion-item>
-              <ion-label position="stacked">Tipo</ion-label>
-              <ion-select formControlName="type" placeholder="Tipo" inputmode="text" labelPlacement="floating"
-                label="Select Tipo">
-                <ion-select-option value="automovil">Vehiculo</ion-select-option>
-                <ion-select-option value="moto">Moto</ion-select-option>
-                <ion-select-option value="discapacitado">Discapacitado</ion-select-option>
-              </ion-select>
+            <ion-label> Tipo</ion-label>
+              <ion-segment formControlName="type" ngDefaultControl class="custom-segment">
+                <ion-segment-button value="automovil" class="custom-segment-button">
+                  <ion-icon name="car-outline"></ion-icon>
+                  <ion-label>Vehículo</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="moto" class="custom-segment-button">
+                  <ion-icon name="bicycle-outline"></ion-icon>
+                  <ion-label>Moto</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="discapacitado" class="custom-segment-button">
+                  <ion-icon name="accessibility-outline"></ion-icon>
+                  <ion-label>Discapacitado</ion-label>
+                </ion-segment-button>
+              </ion-segment>
             </ion-item>
+            
             <ion-item>
               <ion-label position="stacked">Latitud</ion-label>
               <ion-input formControlName="latitude" inputmode="text" type="text" name="Latitude"

@@ -14,11 +14,11 @@ import {
   IonText,
   IonInput,
   IonButton,
-  IonLabel,
+  IonButtons,
   IonHeader,
-  IonItem,
   IonToolbar,
   IonTitle,
+  IonModal, IonAccordion, IonAccordionGroup, IonItem, IonLabel, IonToggle
 } from '@ionic/angular/standalone';
 import {
   peopleOutline,
@@ -44,6 +44,11 @@ import { ErrorParser } from '@/app/utils/ErrorParser.util';
     IonText,
     IonInput,
     IonButton,
+    IonButtons,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonModal, IonAccordion, IonAccordionGroup, IonItem, IonLabel, IonToggle
   ],
 })
 export class LoginPage implements OnInit {
@@ -51,6 +56,10 @@ export class LoginPage implements OnInit {
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off-outline';
   loginError: string | null = null;
+
+  // Nuevas variables para el modal y tema
+  infoModalOpen: boolean = false;
+  isDarkTheme: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -102,5 +111,29 @@ export class LoginPage implements OnInit {
     this.router.navigate(['/forgot']);
   }
 
-  ngOnInit() {}
+  // Método para abrir el modal de información del proyecto
+  openInfoModal() {
+    this.infoModalOpen = true;
+  }
+
+  // Método para cerrar el modal
+  closeInfoModal() {
+    this.infoModalOpen = false;
+  }
+
+  // Método para alternar el tema claro/oscuro
+  toggleTheme(event: any) {
+    this.isDarkTheme = event.detail.checked;
+    if (this.isDarkTheme) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }
+
+  ngOnInit() {
+    // Forzamos el modo claro por defecto, sin depender de la configuración del navegador
+    document.body.classList.remove('dark');
+    this.isDarkTheme = false;
+  }
 }

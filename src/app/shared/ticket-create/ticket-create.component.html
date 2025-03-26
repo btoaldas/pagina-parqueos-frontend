@@ -2,7 +2,7 @@
   <ng-template>
     <ion-header>
       <ion-toolbar>
-        <ion-button slot="start" color="medium" (click)="close()">Cancel</ion-button>
+        <ion-button slot="start" color="medium" (click)="close()">Cancelar</ion-button>
         <ion-title>Crear Ticket</ion-title>
       </ion-toolbar>
     </ion-header>
@@ -21,7 +21,7 @@
         <ion-item>
           <ion-label position="stacked">Placa</ion-label>
           <ion-select formControlName="plate" placeholder="Placa" inputmode="text" labelPlacement="floating"
-            label="Select Placa" ngDefaultControl>
+            label="Seleccionar una Placa" ngDefaultControl>
             @for (vehicle of vehicles; track vehicle.id) {
             <ion-select-option [value]="vehicle.id">{{vehicle.plate}}</ion-select-option>
             }
@@ -30,7 +30,7 @@
         <ion-item>
           <ion-label position="stacked">Espacios</ion-label>
           <ion-select formControlName="id_space" placeholder="Espacio" inputmode="text" labelPlacement="floating"
-            label="Select Espacio" ngDefaultControl>
+            label="Seleccionar un Espacio" ngDefaultControl>
             @for (space of spaces; track space.id) {
             <ion-select-option [value]="space.id">{{space.zone.id}}Z-{{space.id}}E</ion-select-option>
             }

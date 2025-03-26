@@ -71,7 +71,7 @@ export class VehicleUserCreateComponent implements OnInit {
           this.vehiclesChange.emit(this.vehicles);
           this.onClose.emit();
 
-          this.successMessage = 'Vehicle created successfully';
+          this.successMessage = 'Vehiculo creado correctamente';
         },
         error: (err) => {
           this.errorMessage = ErrorParser.handleError(err);

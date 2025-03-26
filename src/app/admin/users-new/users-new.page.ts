@@ -19,16 +19,68 @@ import {
   IonToggle,
   IonInput,
   IonButton,
+  IonLabel,
+  IonSegmentButton
 } from '@ionic/angular/standalone';
 import { UserService } from '@/app/services/user.service';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
-import { keyOutline, mailOutline, personOutline } from 'ionicons/icons';
+import { keyOutline, mailOutline, personOutline, shieldCheckmarkOutline, briefcaseOutline, personCircleOutline } from 'ionicons/icons';
 import { UserCreateType } from '@/app/models/user.model';
 
 @Component({
   selector: 'app-users-new',
   templateUrl: './users-new.page.html',
+  styles: [
+    `
+    .custom-segment-button.ion-activated {
+  background-color: #007bff !important; /* Azul */
+  color: #ffffff !important; /* Texto blanco */
+}
+
+.custom-segment-button.ion-activated ion-icon,
+.custom-segment-button.ion-activated ion-label {
+  color: #ffffff !important;
+}
+    .custom-segment {
+  --background: #f1f3f5; /* Fondo claro para el grupo */
+  --indicator-color: #007bff; /* Color del indicador de selección */
+  border-radius: 8px;
+  padding: 4px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 400px; /* Opcional, para limitar el ancho */
+  display: flex;
+}
+
+.custom-segment-button {
+  flex: 1;  /* Hace que todos tengan el mismo ancho */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  border-radius: 4px;
+  margin: 2px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* Estilos para el botón activo */
+.custom-segment-button.ion-activated {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Opcional: ajustar los íconos */
+.custom-segment-button ion-icon {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+  
+`,
+  ],
   standalone: true,
   imports: [
     IonText,
@@ -45,6 +97,8 @@ import { UserCreateType } from '@/app/models/user.model';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    IonLabel,
+    IonSegmentButton,
   ],
 })
 export class UsersNewPage implements OnInit {
@@ -64,11 +118,7 @@ export class UsersNewPage implements OnInit {
       role: ['cliente', [Validators.required]],
       state: [0, [Validators.required]],
     });
-    addIcons({
-      personOutline,
-      mailOutline,
-      keyOutline,
-    });
+    addIcons({personOutline,mailOutline,keyOutline,shieldCheckmarkOutline,briefcaseOutline,personCircleOutline,});
   }
 
   onSubmit() {

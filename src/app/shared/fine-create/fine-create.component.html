@@ -2,7 +2,7 @@
   <ng-template>
     <ion-header>
       <ion-toolbar>
-        <ion-button slot="start" color="medium" (click)="close()">Cancel</ion-button>
+        <ion-button slot="start" color="medium" (click)="close()">Cancelar</ion-button>
         <ion-title>Crear Multa</ion-title>
       </ion-toolbar>
     </ion-header>
@@ -20,7 +20,7 @@
         <ion-item>
           <ion-label position="stacked">Vehicle</ion-label>
           <ion-select formControlName="id_ticket" placeholder="Vehiculo" inputmode="text" labelPlacement="floating"
-            label="Select Vehiculo" ngDefaultControl>
+            label="Seleccionar un Vehiculo" ngDefaultControl>
             @for (vehicle of vehicles; track vehicle.id) {
             <ion-select-option [value]="vehicle.id">{{vehicle.plate}}</ion-select-option>
             }

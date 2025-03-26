@@ -21,6 +21,7 @@ import {
   IonSelectOption,
   IonLabel,
   IonItem,
+  IonSegmentButton,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -44,6 +45,57 @@ import { ErrorParser } from '@/app/utils/ErrorParser.util';
 @Component({
   selector: 'app-parking',
   templateUrl: './parking.page.html',
+  styles: [
+    `
+    .custom-segment-button.ion-activated {
+  background-color: #007bff !important; /* Azul */
+  color: #ffffff !important; /* Texto blanco */
+}
+
+.custom-segment-button.ion-activated ion-icon,
+.custom-segment-button.ion-activated ion-label {
+  color: #ffffff !important;
+}
+    .custom-segment {
+  --background: #f1f3f5; /* Fondo claro para el grupo */
+  --indicator-color: #007bff; /* Color del indicador de selección */
+  border-radius: 8px;
+  padding: 4px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 400px; /* Opcional, para limitar el ancho */
+  display: flex;
+}
+
+.custom-segment-button {
+  flex: 1;  /* Hace que todos tengan el mismo ancho */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  border-radius: 4px;
+  margin: 2px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* Estilos para el botón activo */
+.custom-segment-button.ion-activated {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Opcional: ajustar los íconos */
+.custom-segment-button ion-icon {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+  
+
+`,
+  ],
   standalone: true,
   imports: [
     IonItem,
@@ -61,6 +113,7 @@ import { ErrorParser } from '@/app/utils/ErrorParser.util';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    IonSegmentButton,
   ],
 })
 export class ParkingPage implements OnInit {
@@ -119,8 +172,9 @@ export class ParkingPage implements OnInit {
   openEditZone(id?: number) {
     this.isZoneEditOpen = true;
     this.zoneError = null;
-    if (id == null) {
+    if (id == null || id < 0) {
       this.isNewZone = true;
+      this.zoneEditForm.reset();
       return;
     }
     this.isNewZone = false;
@@ -193,8 +247,9 @@ export class ParkingPage implements OnInit {
   openSpaceNew(id?: number) {
     this.isSpaceNewOpen = true;
     this.spaceError = null;
-    if (id == null) {
+    if (id == null || id < 0) {
       this.isNewZone = true;
+      this.spaceEditForm.reset();
       return;
     }
     this.isNewZone = false;

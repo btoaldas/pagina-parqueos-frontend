@@ -9,6 +9,9 @@ import {
   IonText,
   IonIcon,
   IonImg,
+  IonButton,
+  IonItem,
+  IonLabel,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -47,6 +50,9 @@ import { SpotsMapComponent } from '../../shared/spots-map/spots-map.component';
     CommonModule,
     FormsModule,
     SpotsMapComponent,
+    IonButton,
+    IonItem,
+    IonLabel,
   ],
 })
 export class HomePage implements OnInit {
@@ -54,6 +60,11 @@ export class HomePage implements OnInit {
   role: string;
   tickets: TicketProfile[] = [];
   fines: FineProfile[] = [];
+  // Variables para controlar la visibilidad de cada bloque
+  isStatsMinimized = false;
+  isTicketsMinimized = false;
+  isMapMinimized = false;
+  
 
   @ViewChild(SpotsMapComponent) spotsMapComponent!: SpotsMapComponent;
 
@@ -79,7 +90,6 @@ export class HomePage implements OnInit {
 
   ionViewWillEnter() {
     if (!this.spotsMapComponent) return;
-
     this.spotsMapComponent.loadMap();
   }
 
@@ -96,16 +106,13 @@ export class HomePage implements OnInit {
       month: 'long',
       year: 'numeric',
     };
-
     return fecha.toLocaleDateString('es-ES', options);
   }
 
   format(value?: number | null, prefix = '', sufix = '') {
-    if (this.report == null || value == null) return 'Loading...';
+    if (this.report == null || value == null) return 'Cargando...';
     if (isNaN(value)) value = 0;
-    return `${prefix}${Intl.NumberFormat().format(
-      Math.round(value * 100) / 100
-    )}${sufix}`;
+    return `${prefix}${Intl.NumberFormat().format(Math.round(value * 100) / 100)}${sufix}`;
   }
 
   isOnTime(fechaObjetivo: Date) {
@@ -118,16 +125,12 @@ export class HomePage implements OnInit {
   calcularTiempoRestante(fechaObjetivo: Date) {
     const ahora = new Date();
     const objetivo = new Date(fechaObjetivo);
-
     const diferencia = objetivo.getTime() - ahora.getTime();
-
     if (diferencia <= 0) {
       return 'Fuera de tiempo';
     }
-
-    const horas = Math.floor(diferencia / (1000 * 60 * 60)); // Horas restantes
-    const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60)); // Minutos restantes
-
+    const horas = Math.floor(diferencia / (1000 * 60 * 60));
+    const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
     return `Faltan ${horas} horas y ${minutos} minutos.`;
   }
 
@@ -153,4 +156,23 @@ export class HomePage implements OnInit {
       },
     });
   }
+
+  toggleStats() {
+    this.isStatsMinimized = !this.isStatsMinimized;
+  }
+
+  toggleTickets() {
+    this.isTicketsMinimized = !this.isTicketsMinimized;
+  }
+
+  toggleMap() {
+    this.isMapMinimized = !this.isMapMinimized;
+  }
+
+  // trackBy para iterar listas de forma óptima
+  trackById(index: number, item: any): any {
+    return item.id;
+  }
+
+
 }

@@ -1,127 +1,182 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar color="primary">
-      <ion-title size="large">Home</ion-title>
-      <ion-text>{{getDate()}}</ion-text>
+      <ion-title size="large">Dashboard</ion-title>
+      <ion-text>{{ getDate() }}</ion-text>
     </ion-toolbar>
   </ion-header>
 
-  <div class="bg-gray-100 dark:bg-gray-900 gap-2 flex flex-col p-2">
-    @if(role !== 'cliente'){
-    <div class="flex flex-col gap-2 py-4">
-      <div class="flex items-center bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
-        <ion-icon size="large" name="people"
-          class="p-3 rounded-xl text-blue-600 bg-blue-200 dark:bg-blue-900 dark:text-blue-300"></ion-icon>
-        <div class="flex-1 flex flex-col gap-1 justify-between">
-          <h3 class="text-gray-500 dark:text-gray-200">Usuarios Activo</h3>
-          @if(this.report != null) {
-          <p class="text-3xl font-bold">{{format(this.report.active_users.current_month)}}</p>
-          <p class="text-gray-400">{{format(100 * (this.report.active_users.current_month -
-            this.report.active_users!.last_month) / this.report.active_users.current_month, '', '%')}} vs mes
-            anterior</p>
-          } @else {
-          <p>Loading...</p>
-          }
-        </div>
-      </div>
-
-      <div class="flex items-center bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
-        <ion-icon size="large" name="cash-outline"
-          class="p-3 rounded-xl text-green-600 bg-green-200 dark:bg-green-900 dark:text-green-300"></ion-icon>
-        <div class="flex-1 flex flex-col gap-1 justify-between">
-          <h3 class="text-gray-500 dark:text-gray-200">Ingresos del Día</h3>
-          @if(this.report != null){
-          <p class="text-3xl font-bold">{{format(this.report.income_today.total, '$')}}</p>
-          <p class="text-gray-400">0 transacciones</p>
-          } @else {
-          <p>Loading...</p>
-          }
-        </div>
-      </div>
-
-      <div class="flex items-center bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
-        <ion-icon size="large" name="car-outline"
-          class="p-3 rounded-xl text-yellow-600 bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300"></ion-icon>
-        <div class="flex-1 flex flex-col gap-1 justify-between">
-          <h3 class="text-gray-500 dark:text-gray-200">Espacios Ocupados</h3>
-          @if(this.report != null) {
-          <p class="text-3xl font-bold">{{format(this.report.spaces_taken.percent, '', '%')}}</p>
-          <p class="text-gray-400">
-            {{format(this.report.spaces_taken.taken)}}/{{format(this.report.spaces_taken.total)}} espacios</p>
-          } @else {
-          Loading...
-          }
-        </div>
-      </div>
-
-      <div class="flex items-center bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
-        <ion-icon size="large" name="warning"
-          class="p-3 rounded-xl text-rose-600 bg-rose-200 dark:bg-rose-900 dark:text-rose-300"></ion-icon>
-        <div class="flex-1 flex flex-col gap-1 justify-between">
-          <h3 class="text-gray-500 dark:text-gray-200">Multas Pendientes</h3>
-          @if(this.report != null) {
-          <p class="text-3xl font-bold">{{format(this.report.fees.total)}}</p>
-          <p class="text-gray-400">{{format(this.report.fees.amount ?? 0, '$')}} por cobrar</p>
-          } @else {
-          Loading...
-          }
-        </div>
-      </div>
-    </div>
-    } @else {
-    <div class="py-2 flex flex-col gap-2">
-      <ion-text class="text-lg font-bold">Tickets</ion-text>
-      @for (ticket of tickets; track ticket.id) {
-      <div class="bg-white dark:bg-gray-950 shadow-md rounded-md p-4 flex gap-2 flex-col">
-        <div class="flex justify-between items-center">
-          <p class="text-sm text-gray-500">Ticket #{{ticket.id}}</p>
-          <div class="flex">
-            <p
-              class="flex items-center p-2 rounded-md text-center font-bold bg-blue-300 text-blue-800 dark:bg-blue-800 dark:text-blue-300">
-              <span>{{ticket.state}}</span>
-            </p>
+  <!-- Contenedor principal con Flexbox -->
+  <div class="dashboard-container flex flex-col h-full">
+    <!-- Bloque superior: Módulos minimizables -->
+    <div class="top-modules">
+      <!-- Módulo de Estadísticas (solo si el rol no es 'cliente') -->
+      <div *ngIf="role !== 'cliente'">
+        <ion-item button (click)="toggleStats()" lines="none">
+          <ion-label>Estadísticas</ion-label>
+          <ion-icon slot="end" [name]="isStatsMinimized ? 'chevron-down-outline' : 'chevron-up-outline'"></ion-icon>
+        </ion-item>
+        <div *ngIf="!isStatsMinimized">
+          <div class="grid grid-cols-2 gap-2 py-4">
+            <!-- Tarjeta: Usuarios Activos -->
+            <div class="flex items-center bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
+              <ion-icon size="large" name="people" class="p-3 rounded-xl text-blue-600 bg-blue-200 dark:bg-blue-900 dark:text-blue-300"></ion-icon>
+              <div class="flex-1 flex flex-col gap-1 justify-between">
+                <h3 class="text-gray-500 dark:text-gray-200">Usuarios Activos</h3>
+                  <ng-container *ngIf="report; else loading">
+                    <p class="text-3xl font-bold">{{ format(report.active_users.current_month) }}</p>
+                    <p class="text-gray-400">
+                      {{ format(100 * (report.active_users.current_month - report.active_users.last_month) / report.active_users.current_month, '', '%') }}
+                      vs mes anterior
+                    </p>
+                  </ng-container>
+                  <ng-template #loading>
+                    <p>Cargando...</p>
+                  </ng-template>
+               
+              </div>
+            </div>
+            <!-- Tarjeta: Ingresos del Día -->
+            <div class="flex items-center bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
+              <ion-icon size="large" name="cash-outline" class="p-3 rounded-xl text-green-600 bg-green-200 dark:bg-green-900 dark:text-green-300"></ion-icon>
+              <div class="flex-1 flex flex-col gap-1 justify-between">
+                <h3 class="text-gray-500 dark:text-gray-200">Ingresos del Día</h3>
+                <ng-container *ngIf="report; else loadingIncome">
+                  <p class="text-3xl font-bold">{{ format(report.income_today.total, '$') }}</p>
+                  <p class="text-gray-400">0 transacciones</p>
+                </ng-container>
+                <ng-template #loadingIncome>
+                  <p>Cargando...</p>
+                </ng-template>
+              </div>
+            </div>
+            <!-- Tarjeta: Espacios Ocupados -->
+            <div class="flex items-center bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
+              <ion-icon size="large" name="car-outline" class="p-3 rounded-xl text-yellow-600 bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300"></ion-icon>
+              <div class="flex-1 flex flex-col gap-1 justify-between">
+                <h3 class="text-gray-500 dark:text-gray-200">Espacios Ocupados</h3>
+                <ng-container *ngIf="report; else loadingSpaces">
+                  <p class="text-3xl font-bold">{{ format(report.spaces_taken.percent, '', '%') }}</p>
+                  <p class="text-gray-400">{{ format(report.spaces_taken.taken) }}/{{ format(report.spaces_taken.total) }} espacios</p>
+                </ng-container>
+                <ng-template #loadingSpaces>
+                  <p>Cargando...</p>
+                </ng-template>
+              </div>
+            </div>
+            <!-- Tarjeta: Multas Pendientes -->
+            <div class="flex items-center bg-white dark:bg-gray-950 p-4 rounded-md shadow-md gap-4">
+              <ion-icon size="large" name="warning" class="p-3 rounded-xl text-rose-600 bg-rose-200 dark:bg-rose-900 dark:text-rose-300"></ion-icon>
+              <div class="flex-1 flex flex-col gap-1 justify-between">
+                <h3 class="text-gray-500 dark:text-gray-200">Multas Pendientes</h3>
+                <ng-container *ngIf="report; else loadingFees">
+                  <p class="text-3xl font-bold">{{ format(report.fees.total) }}</p>
+                  <p class="text-gray-400">{{ format(report.fees.amount ?? 0, '$') }} por cobrar</p>
+                </ng-container>
+                <ng-template #loadingFees>
+                  <p>Cargando...</p>
+                </ng-template>
+              </div>
+            </div>
           </div>
         </div>
-        <p class="text-lg font-bold">{{ticket.plate}} - {{ticket.zone_name}}</p>
-        <div class="flex items-center gap-2">
-          <ion-icon name="time-outline"></ion-icon>
-          <p>
-            {{ticket.entry_date.getHours()}}:{{ticket.entry_date.getMinutes()}}:{{ticket.entry_date.getSeconds()}}
-          </p>
-        </div>
-        @if(isOnTime(ticket.max_date)){
-        <p class="bg-red-800 text-red-300 px-2 py-1 rounded-md">{{calcularTiempoRestante(ticket.max_date)}}</p>
-        } @else {
-        <p class="bg-green-300 text-green-800 dark:bg-green-800 dark:text-green-300 px-2 py-1 rounded-md">
-          {{calcularTiempoRestante(ticket.max_date)}}</p>
-        }
       </div>
-      }
-      @if(tickets.length === 0) {
-      <p>No Tienes Tickets</p>
-      }
 
-      <ion-text class="text-lg font-bold">Multas</ion-text>
-      @for (fine of fines; track fine.id) {
-      <div class="bg-white dark:bg-gray-950 shadow-md rounded-md p-4 flex gap-2 flex-col items-center">
-        <div class="flex gap-2 items-center justify-between w-full">
-          <p class="text-sm text-gray-500">Multa #{{fine.id}}</p>
-          <p class="text-lg font-bold">{{fine.plate}}</p>
-          <p
-            class="flex items-center p-2 rounded-md text-center font-bold bg-green-300 text-green-800 dark:bg-green-800 dark:text-green-300">
-            <span>${{fine.amount}}</span>
-          </p>
+      <!-- Bloque de Tickets y Multas -->
+      <ion-item button (click)="toggleTickets()" lines="none">
+        <ion-label>Tickets y Multas</ion-label>
+        <ion-icon slot="end" [name]="isTicketsMinimized ? 'chevron-down-outline' : 'chevron-up-outline'"></ion-icon>
+      </ion-item>
+      <div *ngIf="!isTicketsMinimized">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Tarjeta Tickets -->
+          <div class="flex flex-col gap-2">
+            <ion-text class="text-lg font-bold mb-2">Tickets</ion-text>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))] gap-3">
+              <!-- Itera cada ticket -->
+              <ng-container *ngFor="let ticket of tickets; trackBy: trackById">
+                <div class="bg-white dark:bg-gray-950 shadow-md rounded-md p-3 flex flex-col gap-2">
+                  <div class="flex justify-between items-center">
+                    <p class="text-xs text-gray-500 dark:text-gray-400">#{{ ticket.id }}</p>
+                    <div class="flex">
+                      <p class="flex items-center px-2 py-1 rounded-md text-xs font-bold bg-blue-300 text-blue-800 dark:bg-blue-800 dark:text-blue-300">
+                        <span>{{ ticket.state }}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <p class="text-base font-bold dark:text-gray-200">{{ ticket.plate }}</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">{{ ticket.zone_name }}</p>
+                  </div>
+                  <div class="flex items-center gap-2 text-sm">
+                    <ion-icon name="time-outline" class="text-gray-500"></ion-icon>
+                    <span class="dark:text-gray-400">
+                      {{ ticket.entry_date.getHours() }}:{{ ticket.entry_date.getMinutes() | number: '2.0-0' }}
+                    </span>
+                  </div>
+                  <div class="mt-1">
+                    <ng-container *ngIf="isOnTime(ticket.max_date); else doneTime">
+                      <p class="text-sm bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-300 px-2 py-1 rounded-md">
+                        ⏳ {{ calcularTiempoRestante(ticket.max_date) }}
+                      </p>
+                    </ng-container>
+                    <ng-template #doneTime>
+                      <p class="text-sm bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-300 px-2 py-1 rounded-md">
+                        ✅ {{ calcularTiempoRestante(ticket.max_date) }}
+                      </p>
+                    </ng-template>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+            <ng-container *ngIf="tickets.length === 0">
+              <p class="col-span-full text-gray-500 dark:text-gray-400 text-center py-4">No hay tickets registrados</p>
+            </ng-container>
+          </div>
+
+          <!-- Tarjeta Multas -->
+          <div class="flex flex-col gap-2">
+            <ion-text class="text-lg font-bold mb-3">Multas</ion-text>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-2">
+              <ng-container *ngFor="let fine of fines; trackBy: trackById">
+                <div class="bg-white dark:bg-gray-950 shadow-md rounded-md p-3 flex flex-col gap-3 items-center">
+                  <div class="flex gap-2 items-center justify-between w-full">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">#{{ fine.id }}</p>
+                    <p class="text-base font-bold dark:text-gray-200">{{ fine.plate }}</p>
+                    <p class="flex items-center px-3 py-1 rounded-md font-bold bg-green-300 text-green-800 dark:bg-green-800 dark:text-green-300">
+                      <span>${{ fine.amount }}</span>
+                    </p>
+                  </div>
+                  <div class="w-full aspect-video rounded-md overflow-hidden">
+                    <ion-img class="object-cover w-full h-full"
+                      [src]="bakeImage(fine.filename)"
+                      [alt]="'Multa ' + fine.id"
+                      loading="lazy">
+                    </ion-img>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="fines.length === 0">
+                <div class="col-span-full text-center py-4">
+                  <p class="text-gray-500 dark:text-gray-400">No hay multas registradas</p>
+                </div>
+              </ng-container>
+            </div>
+          </div>
         </div>
-        <ion-img class="object-cover object-center aspect-square rounded-md overflow-hidden"
-          [src]="bakeImage(fine.filename)" [alt]="fine.id"></ion-img>
       </div>
-      }
+    
 
-      @if(fines.length === 0) {
-      <p>No Tienes Tickets</p>
-      }
+    <!-- Contenedor del Mapa: Se expande al ocupar el resto del espacio -->
+    
+    <div class="map-container flex-1">
+      <ion-item button (click)="toggleMap()" lines="none">
+        <ion-label>Ubicación de Espacios</ion-label>
+        <ion-icon slot="end" [name]="isMapMinimized ? 'chevron-down-outline' : 'chevron-up-outline'"></ion-icon>
+      </ion-item> <div *ngIf="!isMapMinimized">
+      <app-spots-map></app-spots-map>
     </div>
-    }
-    <app-spots-map></app-spots-map>
+    </div>
   </div>
+</div>
 </ion-content>

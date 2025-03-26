@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar color="primary">
-      <ion-title size="large">Funcionario</ion-title>
+      <ion-title size="large">Gestión de Espacios de Parqueos</ion-title>
     </ion-toolbar>
   </ion-header>
   <div class="py-2 px-4 bg-gray-100 dark:bg-gray-900 min-h-full flex flex-col gap-3">
@@ -24,6 +24,7 @@
       </ion-button>
       <ion-searchbar (ionInput)="onSearch($event)" placeholder="Buscar por placa..." debounce="250"></ion-searchbar>
       <ion-text class="text-2xl font-bold">Tickets Activos</ion-text>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       @for (ticket of tickets; track ticket.id) {
       <div class="flex flex-col bg-white dark:bg-gray-950 p-2 gap-2 rounded-md shadow-md">
         <div class="flex justify-between items-center">
@@ -70,14 +71,18 @@
         </ion-button>
       </div>
       }
+      </div>
       }
+      
       @case ('multas') {
+        
       <ion-button (click)="openNewFine()">
         <ion-icon slot="start" name="add-circle-outline"></ion-icon>
         Registrar Multa
       </ion-button>
       <ion-searchbar (ionInput)="onSearch($event)" placeholder="Buscar por placa..." debounce="250"></ion-searchbar>
       <ion-text class="text-2xl font-bold">Multas Activos</ion-text>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       @for (fine of fines; track fine.id) {
       <div class="flex flex-col bg-white dark:bg-gray-950 p-2 gap-2 rounded-md shadow-md">
         <p class="text-sm">Fine #{{fine.id}}</p>
@@ -93,7 +98,7 @@
           Pagar Multa
         </ion-button>
       </div>
-      }
+      }</div>
       }
       }
 

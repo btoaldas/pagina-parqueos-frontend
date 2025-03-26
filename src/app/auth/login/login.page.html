@@ -37,11 +37,25 @@
           ¿Olvidó su contraseña?
         </p>
       </ion-text>
+      
+      <!-- Enlace para Información del Proyecto -->
+      <ion-text color="medium">
+        <p class="text-sm text-end cursor-pointer my-3" (click)="openInfoModal()">
+          Conoce más
+        </p>
+      </ion-text>
 
       <!-- Botón Iniciar Sesión -->
       <ion-button expand="block" color="primary" type="submit">
         Iniciar Sesión
       </ion-button>
+
+<!--       Switch para cambiar tema (Claro/Oscuro) 
+      <div class="flex justify-center items-center my-3 gap-2">
+        <span>Claro</span>
+        <ion-toggle (ionChange)="toggleTheme($event)" [checked]="isDarkTheme"></ion-toggle>
+        <span>Oscuro</span>
+      </div> -->
 
       <!-- Mensaje de Error -->
       <ion-text *ngIf="loginError" color="danger">
@@ -49,4 +63,52 @@
       </ion-text>
     </form>
   </div>
+
+  <!-- Modal de Información del Proyecto -->
+  <ion-modal [isOpen]="infoModalOpen" (didDismiss)="closeInfoModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Información del Proyecto</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeInfoModal()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <p><strong>Nombre del Proyecto:</strong> NombreDelProyecto</p>
+        <p><strong>Objetivos:</strong> Objetivo 1, Objetivo 2, ...</p>
+        <p><strong>Integrantes:</strong> Juan, María, ...</p>
+        <p><strong>Universidad:</strong> Universidad XYZ</p>
+
+        <!-- FAQ Accordion -->
+        <ion-accordion-group>
+          <ion-accordion value="faq1">
+            <ion-item slot="header">
+              <ion-label>¿Cómo funciona la app?</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              La app funciona de la siguiente manera: ...
+            </div>
+          </ion-accordion>
+          <ion-accordion value="faq2">
+            <ion-item slot="header">
+              <ion-label>¿Qué tecnologías se utilizan?</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              Se utilizan Angular, Ionic, y otras tecnologías.
+            </div>
+          </ion-accordion>
+          <ion-accordion value="faq3">
+            <ion-item slot="header">
+              <ion-label>¿Dónde puedo reportar problemas?</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              Puedes reportar problemas a través del correo serotpsoporte&#64;puyo.gob.ec              .
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

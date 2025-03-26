@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar color="primary">
-      <ion-title size="large">Usuarios</ion-title>
+      <ion-title size="large">Gestión de Usuarios</ion-title>
       <ion-button slot="end" (click)="onNewUser()">
         <ion-icon slot="start" name="add-outline"></ion-icon>
         Nuevo
@@ -10,8 +10,8 @@
     <ion-searchbar (ionInput)="onSearch($event)" placeholder="Buscar..." debounce="250"></ion-searchbar>
   </ion-header>
 
-  <div class="bg-gray-100 dark:bg-gray-900 gap-2 flex flex-col p-2">
-    <div class="flex flex-col gap-3 overflow-y-scroll">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    
       @if(users) {
       @for(user of users; track user.id) {
       <div class="rounded-md bg-white dark:bg-gray-950 p-2 shadow-md flex flex-col gap-2">
@@ -52,6 +52,6 @@
       } @empty { <ion-text>Sin usuarios</ion-text>
       }
       }
-    </div>
+    
   </div>
 </ion-content>
